@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Jo &amp; Helen | Share your photos</title>
+<meta name="description" content="Send us the photos you took at our wedding. No app, no account, no fuss." />
+<meta name="theme-color" content="#2a2a2a" />
+<meta name="robots" content="noindex" />
+<style>
+  :root{
+    --charcoal:#2a2a2a;
+    --cream:#fafaf5;
+    --gold:#bd984b;
+    --gold-rule:#b79349;
+    --gold-light:#ceb074;
+    --sage:#90a78d;
+    --ink:#2a2a2a;
+    --muted:#6f6f68;
+    --hair:#e2ded0;
+    --serif:Georgia,"Times New Roman",Times,serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-text-size-adjust:100%;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:540px;margin:0 auto;padding:0 22px}
+
+  /* ---------- charcoal header band, as per the invitation ---------- */
+  .band{
+    background:var(--charcoal);
+    border-top:5px solid var(--gold-rule);
+    color:#fff;
+    text-align:center;
+    padding:38px 22px 30px;
+  }
+  .eyebrow{
+    margin:0 0 22px;
+    color:var(--gold);
+    font-size:11px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+  }
+  .names{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:44px;
+    line-height:1.1;
+    margin:0 0 12px;
+    color:#fff;
+  }
+  .names .amp{color:var(--gold)}
+  .band .italic{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:19px;
+    color:var(--gold-light);
+    margin:0 0 22px;
+  }
+  .diamond{
+    color:var(--gold);
+    font-size:13px;
+    line-height:1;
+    margin:0;
+  }
+
+  /* ---------- date treatment ---------- */
+  .datewrap{text-align:center;padding:30px 0 4px}
+  .dateline{
+    display:flex;align-items:center;justify-content:center;gap:16px;
+  }
+  .dateline span{
+    font-family:var(--serif);
+    font-size:27px;
+    letter-spacing:.06em;
+    color:var(--ink);
+    white-space:nowrap;
+  }
+  .dateline span i{color:var(--gold);font-style:normal}
+  .dateline em{flex:0 1 62px;height:1px;background:var(--hair);display:block}
+  .dayline{
+    margin:12px 0 0;
+    color:var(--sage);
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+  }
+
+  hr.rule{border:0;border-top:1px solid var(--hair);margin:30px 0}
+  .divider{text-align:center;margin:32px 0;position:relative}
+  .divider::before{
+    content:"";position:absolute;left:0;right:0;top:50%;
+    border-top:1px solid var(--hair);
+  }
+  .divider span{
+    position:relative;background:var(--cream);padding:0 14px;
+    color:var(--gold);font-size:12px;line-height:1;
+  }
+
+  .lede{margin:26px 0 24px;font-size:17px;text-align:center;color:#3d3d38}
+  .lede strong{color:var(--ink)}
+
+  .section-label{
+    text-align:center;
+    color:var(--gold);
+    font-size:11px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    margin:0 0 18px;
+  }
+
+  label.field{display:block;margin:0 0 18px}
+  label.field span{
+    display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:8px;
+  }
+  input[type=text]{
+    width:100%;font:inherit;
+    padding:15px 16px;
+    border:1px solid var(--hair);
+    border-radius:4px;
+    background:#fff;
+    color:var(--ink);
+  }
+  input[type=text]:focus{outline:2px solid var(--gold);outline-offset:1px}
+
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:11px;
+    width:100%;font:inherit;font-weight:600;
+    padding:19px 20px;
+    border-radius:4px;
+    border:1px solid transparent;
+    cursor:pointer;text-decoration:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn.primary{background:var(--charcoal);color:#fff;font-size:18px}
+  .btn.primary:active{background:#161616}
+  .btn.second{background:transparent;color:var(--charcoal);border-color:var(--gold-rule);margin-top:12px}
+  .btn.second:active{background:#f2efe2}
+  .btn svg{width:21px;height:21px;flex:none}
+  .btn.primary svg{color:var(--gold)}
+
+  .hint{margin:15px 0 0;font-size:14px;color:var(--muted);text-align:center}
+
+  #list{list-style:none;margin:24px 0 0;padding:0}
+  #list li{display:flex;gap:13px;align-items:center;padding:12px 0;border-top:1px solid var(--hair)}
+  .thumb{
+    width:46px;height:46px;flex:none;
+    border-radius:3px;
+    background:#efece0 center/cover no-repeat;
+    border:1px solid var(--hair);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold);font-size:17px;
+  }
+  .meta{flex:1;min-width:0}
+  .fname{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+  .bar{height:5px;border-radius:5px;background:#eae6d8;margin-top:7px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s ease}
+  .state{font-size:13px;margin-top:6px;color:var(--muted)}
+  li.done .state{color:#5c7a58;font-weight:600}
+  li.done .bar,li.failed .bar{display:none}
+  li.failed .state{color:#9c4a3c}
+  .retry{
+    font:inherit;font-size:13px;font-weight:600;
+    background:none;border:0;color:var(--charcoal);
+    text-decoration:underline;cursor:pointer;padding:0;margin-left:8px;
+  }
+
+  #tally{
+    display:none;
+    margin-top:28px;
+    background:var(--charcoal);
+    color:#fff;
+    text-align:center;
+    padding:26px 22px;
+    border-top:3px solid var(--gold-rule);
+  }
+  #tally.show{display:block}
+  #tally b{
+    display:block;
+    font-family:var(--serif);font-weight:400;font-size:26px;
+    color:var(--gold);margin-bottom:7px;
+  }
+  #tally p{margin:0;font-size:15px;color:#ddd9cd}
+
+  .notice{margin-top:24px;border-radius:4px;padding:16px 18px;font-size:15px;display:none}
+  .notice.show{display:block}
+  .notice.warn{background:#fbf1dd;border:1px solid #e6d3a8;color:#6b5220}
+
+  footer{text-align:center;margin-top:34px;font-size:13px;color:var(--muted);line-height:1.8}
+  footer a{color:var(--charcoal)}
+</style>
+</head>
+<body>
+
+<div class="band">
+  <p class="eyebrow">Photos from the day</p>
+  <h1 class="names" id="heading">Jo <span class="amp">&amp;</span> Helen</h1>
+  <p class="italic">share what you caught</p>
+  <p class="diamond">&#9670;</p>
+</div>
+
+<div class="wrap">
+
+  <div class="datewrap">
+    <div class="dateline">
+      <em></em><span>15 <i>&middot;</i> 08 <i>&middot;</i> 26</span><em></em>
+    </div>
+    <p class="dayline" id="date-line">Saturday, 15 August 2026</p>
+  </div>
+
+  <div class="notice warn" id="setup-warning">
+    <strong>Almost ready.</strong> This page still needs its upload settings filling in.
+    Open <code>photos/index.html</code> and put the Cloudinary cloud name and upload preset
+    into the CONFIG block at the bottom of the script.
+  </div>
+
+  <p class="lede">You have the camera in your pocket. <strong>Send us everything you take today.</strong></p>
+
+  <div class="divider"><span>&#9670;</span></div>
+
+  <p class="section-label">Send your photos</p>
+
+  <label class="field">
+    <span>Your name, optional</span>
+    <input type="text" id="guest" autocomplete="name" placeholder="So we know who to thank" maxlength="60" />
+  </label>
+
+  <button class="btn primary" id="pick">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 16l4.5-4.5a2 2 0 0 1 2.8 0L15 16"/><path d="M14.5 14.5l1.8-1.8a2 2 0 0 1 2.8 0L21 15"/><circle cx="8.5" cy="10" r="1.4"/></svg>
+    Choose photos &amp; videos
+  </button>
+
+  <button class="btn second" id="snap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+    Take a photo now
+  </button>
+
+  <p class="hint">Pick as many as you like at once. No app, no account, no sign-in.</p>
+
+  <ul id="list"></ul>
+
+</div>
+
+<div id="tally"></div>
+
+<div class="wrap">
+  <input type="file" id="file-pick" accept="image/*,video/*" multiple hidden />
+  <input type="file" id="file-snap" accept="image/*" capture="environment" hidden />
+
+  <hr class="rule" />
+
+  <footer>
+    <p id="google-line" style="display:none"></p>
+    <p>Your photos come straight to us and nowhere else.<br />Nothing is posted anywhere public.</p>
+    <p style="color:var(--gold)">&#9670;</p>
+  </footer>
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   CONFIG. Fill in cloudName and uploadPreset, save, commit.
+   Setup instructions are in photos/README.md.
+------------------------------------------------------------------ */
+var CONFIG = {
+  // From the Cloudinary dashboard, top left. Example: "dxa1b2c3d"
+  cloudName: "PASTE_CLOUD_NAME_HERE",
+
+  // The unsigned upload preset you created. Example: "wedding_guests"
+  uploadPreset: "PASTE_UPLOAD_PRESET_HERE",
+
+  // Optional. A Google Photos shared album link, offered as an extra for
+  // guests who already use Google Photos. Leave blank to hide the line.
+  googlePhotosLink: ""
+};
+
+/* ------------------------------------------------------------------
+   Everything below is the working part. You should not need to touch it.
+------------------------------------------------------------------ */
+(function () {
+  "use strict";
+
+  var MAX_IMAGE_BYTES = 9.5 * 1024 * 1024;   // Cloudinary free plan caps images at 10MB
+  var MAX_VIDEO_BYTES = 99 * 1024 * 1024;    // and videos at 100MB
+  var CONCURRENCY = 2;
+  var MAX_ATTEMPTS = 3;
+
+  var endpoint = "https://api.cloudinary.com/v1_1/" + CONFIG.cloudName + "/auto/upload";
+  var configured = CONFIG.cloudName.indexOf("PASTE") === -1 &&
+                   CONFIG.uploadPreset.indexOf("PASTE") === -1 &&
+                   CONFIG.cloudName.length > 0 && CONFIG.uploadPreset.length > 0;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var listEl = $("list");
+  var guestEl = $("guest");
+  var tallyEl = $("tally");
+
+  var queue = [];
+  var active = 0;
+  var seq = 0;
+  var sentThisVisit = 0;
+
+  /* ---------- page furniture ---------- */
+
+  if (CONFIG.googlePhotosLink) {
+    var gl = $("google-line");
+    gl.style.display = "";
+    gl.innerHTML = 'Already use Google Photos? You can also ' +
+      '<a href="' + CONFIG.googlePhotosLink + '" rel="noopener">add them to our shared album</a>.';
+  }
+  if (!configured) {
+    $("setup-warning").classList.add("show");
+  }
+
+  try {
+    var savedName = localStorage.getItem("wedding_guest_name");
+    if (savedName) { guestEl.value = savedName; }
+  } catch (e) {}
+
+  guestEl.addEventListener("change", function () {
+    try { localStorage.setItem("wedding_guest_name", guestEl.value.trim()); } catch (e) {}
+  });
+
+  $("pick").addEventListener("click", function () { $("file-pick").click(); });
+  $("snap").addEventListener("click", function () { $("file-snap").click(); });
+  $("file-pick").addEventListener("change", onFiles);
+  $("file-snap").addEventListener("change", onFiles);
+
+  window.addEventListener("beforeunload", function (e) {
+    if (active > 0 || queue.some(function (i) { return i.status === "waiting"; })) {
+      e.preventDefault();
+      e.returnValue = "";
+    }
+  });
+
+  /* ---------- picking files ---------- */
+
+  function onFiles(ev) {
+    var files = Array.prototype.slice.call(ev.target.files || []);
+    ev.target.value = "";
+    if (!files.length) { return; }
+
+    if (!configured) {
+      alert("This page is not quite finished being set up. Please tell Jo or Helen.");
+      return;
+    }
+
+    files.forEach(addToQueue);
+    pump();
+  }
+
+  function addToQueue(file) {
+    var item = {
+      id: ++seq,
+      file: file,
+      name: file.name || ("photo-" + seq),
+      isVideo: (file.type || "").indexOf("video/") === 0,
+      status: "waiting",
+      attempts: 0
+    };
+    item.el = renderRow(item);
+    queue.push(item);
+  }
+
+  function renderRow(item) {
+    var li = document.createElement("li");
+    li.id = "row-" + item.id;
+
+    var thumb = document.createElement("div");
+    thumb.className = "thumb";
+    if (item.isVideo) {
+      thumb.textContent = "▶";
+    } else {
+      try {
+        var url = URL.createObjectURL(item.file);
+        thumb.style.backgroundImage = "url(" + url + ")";
+        item.objectUrl = url;
+      } catch (e) {
+        thumb.textContent = "◆";
+      }
+    }
+
+    var meta = document.createElement("div");
+    meta.className = "meta";
+
+    var fname = document.createElement("div");
+    fname.className = "fname";
+    fname.textContent = item.name;
+
+    var bar = document.createElement("div");
+    bar.className = "bar";
+    var fill = document.createElement("i");
+    bar.appendChild(fill);
+
+    var state = document.createElement("div");
+    state.className = "state";
+    state.textContent = "Waiting";
+
+    meta.appendChild(fname);
+    meta.appendChild(bar);
+    meta.appendChild(state);
+    li.appendChild(thumb);
+    li.appendChild(meta);
+    listEl.appendChild(li);
+
+    item.fill = fill;
+    item.state = state;
+    return li;
+  }
+
+  function setState(item, text, cls) {
+    item.state.textContent = text;
+    item.el.className = cls || "";
+  }
+
+  function setProgress(item, pct) {
+    item.fill.style.width = Math.max(2, Math.min(100, pct)) + "%";
+  }
+
+  /* ---------- the queue ---------- */
+
+  function pump() {
+    while (active < CONCURRENCY) {
+      var next = null;
+      for (var i = 0; i < queue.length; i++) {
+        if (queue[i].status === "waiting") { next = queue[i]; break; }
+      }
+      if (!next) { return; }
+      start(next);
+    }
+  }
+
+  function start(item) {
+    item.status = "running";
+    active++;
+    item.attempts++;
+    setState(item, "Getting it ready");
+    setProgress(item, 3);
+
+    prepare(item.file).then(function (blob) {
+      if (item.isVideo && blob.size > MAX_VIDEO_BYTES) {
+        throw new Error("TOO_BIG_VIDEO");
+      }
+      return send(item, blob);
+    }).then(function () {
+      item.status = "done";
+      active--;
+      sentThisVisit++;
+      setState(item, "Sent, thank you", "done");
+      if (item.objectUrl) { try { URL.revokeObjectURL(item.objectUrl); } catch (e) {} }
+      updateTally();
+      pump();
+    }).catch(function (err) {
+      active--;
+      var fatal = err && (err.message === "TOO_BIG_VIDEO" || err.fatal);
+
+      if (!fatal && item.attempts < MAX_ATTEMPTS) {
+        item.status = "waiting";
+        setState(item, "Connection wobbled, trying again");
+        setTimeout(pump, 1200 * item.attempts);
+        return;
+      }
+
+      item.status = "failed";
+      if (err && err.message === "TOO_BIG_VIDEO") {
+        setState(item, "This video is too long to send. A shorter clip will work.", "failed");
+      } else {
+        setState(item, "Did not send.", "failed");
+        var again = document.createElement("button");
+        again.className = "retry";
+        again.type = "button";
+        again.textContent = "Try again";
+        again.addEventListener("click", function () {
+          again.remove();
+          item.attempts = 0;
+          item.status = "waiting";
+          setState(item, "Waiting");
+          pump();
+        });
+        item.state.appendChild(again);
+      }
+      pump();
+    });
+  }
+
+  function updateTally() {
+    if (!sentThisVisit) { return; }
+    tallyEl.classList.add("show");
+    tallyEl.innerHTML =
+      "<b>" + sentThisVisit + (sentThisVisit === 1 ? " photo safely with us" : " photos safely with us") + "</b>" +
+      "<p>Thank you. Come back and add more any time today.</p>";
+  }
+
+  /* ---------- shrink only when we have to ---------- */
+
+  function prepare(file) {
+    if ((file.type || "").indexOf("image/") !== 0) { return Promise.resolve(file); }
+    if (file.size <= MAX_IMAGE_BYTES) { return Promise.resolve(file); }
+    return shrink(file).catch(function () { return file; });
+  }
+
+  function shrink(file) {
+    return loadImage(file).then(function (img) {
+      var attempts = [
+        { max: 3200, q: 0.86 },
+        { max: 2600, q: 0.80 },
+        { max: 2000, q: 0.72 }
+      ];
+
+      function tryAt(i) {
+        if (i >= attempts.length) { return Promise.resolve(file); }
+        var a = attempts[i];
+        var w = img.width, h = img.height;
+        var scale = Math.min(1, a.max / Math.max(w, h));
+        var canvas = document.createElement("canvas");
+        canvas.width = Math.round(w * scale);
+        canvas.height = Math.round(h * scale);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        return toBlob(canvas, a.q).then(function (blob) {
+          if (blob && blob.size <= MAX_IMAGE_BYTES) { return blob; }
+          return tryAt(i + 1);
+        });
+      }
+
+      return tryAt(0);
+    });
+  }
+
+  function loadImage(file) {
+    if (window.createImageBitmap) { return createImageBitmap(file); }
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
+      var url = URL.createObjectURL(file);
+      img.onload = function () { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error("decode")); };
+      img.src = url;
+    });
+  }
+
+  function toBlob(canvas, quality) {
+    return new Promise(function (resolve) {
+      canvas.toBlob(function (b) { resolve(b); }, "image/jpeg", quality);
+    });
+  }
+
+  /* ---------- the upload itself ---------- */
+
+  function send(item, blob, minimal) {
+    return new Promise(function (resolve, reject) {
+      var form = new FormData();
+      form.append("file", blob, item.name);
+      form.append("upload_preset", CONFIG.uploadPreset);
+
+      if (!minimal) {
+        var who = guestEl.value.trim();
+        if (who) {
+          form.append("context", "guest=" + who.replace(/[|=]/g, " ").slice(0, 60));
+          var tag = who.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+          if (tag) { form.append("tags", "guest-upload," + tag); }
+        } else {
+          form.append("tags", "guest-upload");
+        }
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", endpoint, true);
+      xhr.timeout = 10 * 60 * 1000;
+
+      xhr.upload.onprogress = function (e) {
+        if (e.lengthComputable) {
+          var pct = Math.round((e.loaded / e.total) * 100);
+          setProgress(item, pct);
+          setState(item, pct < 100 ? "Sending " + pct + "%" : "Nearly there");
+        }
+      };
+
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) { resolve(); return; }
+        // If the preset rejects the extra fields, send the bare minimum instead.
+        if (xhr.status === 400 && !minimal) { send(item, blob, true).then(resolve, reject); return; }
+        var err = new Error("HTTP " + xhr.status);
+        if (xhr.status === 400 || xhr.status === 401 || xhr.status === 403 || xhr.status === 420) {
+          err.fatal = true;
+        }
+        reject(err);
+      };
+
+      xhr.onerror = function () { reject(new Error("network")); };
+      xhr.ontimeout = function () { reject(new Error("timeout")); };
+      xhr.onabort = function () { reject(new Error("aborted")); };
+
+      xhr.send(form);
+    });
+  }
+})();
+</script>
+</body>
+</html>

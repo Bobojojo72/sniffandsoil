@@ -1,8 +1,12 @@
-# Guest photo uploads
+# Guest photo uploads, Jo & Helen, 15 August 2026
 
 Guests scan a QR code, land on `www.sniffandsoil.co.uk/photos`, pick photos on
 their phone, and the files go straight into one folder you own. No app, no
 account, no sign-in at the guest's end. It works the same on iPhone and Android.
+
+Both pages are styled to match the invitation email: charcoal `#2a2a2a`, cream
+`#fafaf5`, gold `#bd984b`, sage `#90a78d`, serif display type, gold diamond
+divider. Colours were sampled from `our_wedding_brand.PNG` rather than eyeballed.
 
 ## Why not Google
 
@@ -43,8 +47,6 @@ Open `photos/index.html` and edit the CONFIG block near the bottom of the file:
 
 ```js
 var CONFIG = {
-  coupleNames: "",                          // your names, shown as the heading
-  weddingDate: "15 August 2026",
   cloudName: "PASTE_CLOUD_NAME_HERE",       // from step 1
   uploadPreset: "PASTE_UPLOAD_PRESET_HERE", // wedding_guests
   googlePhotosLink: ""                      // optional, see below
@@ -69,8 +71,9 @@ If it lands, it will land for everyone.
 
 ### 5. Print the signs
 
-Open `www.sniffandsoil.co.uk/photos/sign.html` on the laptop. Click either set
-of names to type your own, then click **Print these**.
+Open `www.sniffandsoil.co.uk/photos/sign.html` on the laptop and click
+**Print these**. Both sheets are measured to fill an A4 page exactly, so print
+at 100 percent with no scaling and no margins.
 
 - **Page 1** is an A4 poster for the door, the bar, or the gift table.
 - **Page 2** is four table cards. Cut along the dashed lines.

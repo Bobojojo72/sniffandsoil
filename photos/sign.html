@@ -130,7 +130,24 @@
   .card .note{font-size:8pt;color:var(--muted);margin:0 0 4mm}
   .card .dia{color:var(--gold);font-size:8pt;margin:0;line-height:1}
 
+  /* The sheets are a fixed 210mm wide because they have to be, they are A4.
+     On a phone that is wider than the screen, so scale the preview down to fit
+     rather than leaving the page scrolling sideways. Printing is unaffected. */
+  @media screen and (max-width:840px){ .sheet{zoom:.92} }
+  @media screen and (max-width:768px){ .sheet{zoom:.84} }
+  @media screen and (max-width:680px){ .sheet{zoom:.74} }
+  @media screen and (max-width:600px){ .sheet{zoom:.65} }
+  @media screen and (max-width:520px){ .sheet{zoom:.56} }
+  @media screen and (max-width:440px){ .sheet{zoom:.47} }
+  @media screen and (max-width:380px){ .sheet{zoom:.40} }
+  @media screen and (max-width:840px){
+    .sheet{margin:14px auto}
+    .toolbar{padding:13px 16px}
+    .toolbar button{width:100%;padding:14px 22px}
+  }
+
   @media print{
+    .sheet{zoom:1}
     .toolbar{display:none}
     body{background:#fff}
     .sheet{margin:0;box-shadow:none;page-break-after:always;break-after:page}

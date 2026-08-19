@@ -102,6 +102,9 @@ body {
 }
 
 .main-nav a {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
   text-decoration: none;
   color: var(--text-muted);
   padding: 0.35rem 0.6rem;
@@ -348,8 +351,9 @@ body {
 .signup-form input {
   border-radius: 999px;
   border: 1px solid var(--border-subtle);
-  padding: 0.65rem 1rem;
-  font-size: 0.95rem;
+  padding: 0.7rem 1rem;
+  /* 16px minimum, otherwise iOS Safari zooms the page in on focus */
+  font-size: 1rem;
 }
 
 /* Footer */
@@ -386,12 +390,47 @@ body {
 @media (max-width: 719px) {
   .header-inner {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    align-items: stretch;
+    gap: 0.4rem;
+    padding: 0.6rem 0;
   }
 
+  /* The nav scrolls sideways on its own instead of pushing the page wider.
+     min-width: 0 is the part that matters: without it a flex item refuses to
+     shrink below its content, so overflow-x never gets a chance to work. */
   .main-nav {
+    min-width: 0;
+    max-width: 100%;
     overflow-x: auto;
-    padding-bottom: 0.4rem;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.35rem;
+    padding-bottom: 0.15rem;
+  }
+
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .main-nav a {
+    min-height: 44px;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .btn {
+    min-height: 44px;
+  }
+
+  .hero {
+    padding: 1.75rem 0 2.5rem;
+  }
+}
+
+/* Below this the tagline wraps onto two lines and the sticky header eats a
+   third of the screen. The same words are in the hero anyway. */
+@media (max-width: 479px) {
+  .brand-tagline {
+    display: none;
   }
 }

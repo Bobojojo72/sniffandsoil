@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Margin calculator and box size converter for packaging quotes on the road.">
+<style>
+  html{color-scheme:light dark}
+  body{margin:0;font:14px/1.4 system-ui,sans-serif;background:#F3F3F0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Van Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#F3F3F0;
+    --surface:#FFFFFF;
+    --surface-2:#EAEBE6;
+    --ink:#16181B;
+    --ink-2:#585D57;
+    --ink-3:#8A8F86;
+    --rule:#D6D8D1;
+    --rule-strong:#B7BAB0;
+    --accent:#AE2F20;
+    --edge:#D9862B;
+    --cost-tint:#FBF4C6;
+    --cost-line:#DFCF62;
+    --sell-tint:#DCEACC;
+    --sell-line:#8FB96C;
+    --sell-ink:#2C5116;
+    --focus:#1F5FA8;
+    --shadow:0 1px 0 rgba(22,24,27,.06), 0 2px 10px rgba(22,24,27,.05);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#121417;
+      --surface:#1A1D21;
+      --surface-2:#23272C;
+      --ink:#ECEEE9;
+      --ink-2:#A3A89F;
+      --ink-3:#767B72;
+      --rule:#2D3238;
+      --rule-strong:#414750;
+      --accent:#F0705B;
+      --edge:#C8853A;
+      --cost-tint:#2C2913;
+      --cost-line:#57501F;
+      --sell-tint:#1B2B16;
+      --sell-line:#3D6A2C;
+      --sell-ink:#B8DC9C;
+      --focus:#6AA3E8;
+      --shadow:0 1px 0 rgba(0,0,0,.35), 0 2px 10px rgba(0,0,0,.3);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#121417;
+    --surface:#1A1D21;
+    --surface-2:#23272C;
+    --ink:#ECEEE9;
+    --ink-2:#A3A89F;
+    --ink-3:#767B72;
+    --rule:#2D3238;
+    --rule-strong:#414750;
+    --accent:#F0705B;
+    --edge:#C8853A;
+    --cost-tint:#2C2913;
+    --cost-line:#57501F;
+    --sell-tint:#1B2B16;
+    --sell-line:#3D6A2C;
+    --sell-ink:#B8DC9C;
+    --focus:#6AA3E8;
+    --shadow:0 1px 0 rgba(0,0,0,.35), 0 2px 10px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size:16px;
+    line-height:1.4;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{
+    max-width:600px;
+    margin:0 auto;
+    padding-inline:16px;
+    padding-block:18px 56px;
+  }
+
+  /* ---- masthead ---- */
+  .masthead{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .wordmark{
+    font-size:26px; font-weight:700; letter-spacing:-.02em; margin:0;
+  }
+  .wordmark span{ color:var(--accent); }
+  .standfirst{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; letter-spacing:.10em; text-transform:uppercase;
+    color:var(--ink-3); margin:0;
+  }
+
+  /* ---- tabs ---- */
+  .tabs{
+    position:sticky; top:0; z-index:5;
+    display:grid; grid-template-columns:1fr 1fr; gap:0;
+    margin:16px -16px 0; padding:8px 16px 0;
+    background:var(--paper);
+    border-bottom:1px solid var(--rule);
+  }
+  .tab{
+    appearance:none; border:1px solid var(--rule); border-bottom:none;
+    background:var(--surface-2); color:var(--ink-2);
+    font:600 14px/1 "Archivo", sans-serif; letter-spacing:.04em; text-transform:uppercase;
+    min-height:50px; padding:0 8px; cursor:pointer; border-radius:3px 3px 0 0;
+    margin-bottom:-1px;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--surface); color:var(--ink);
+    border-color:var(--rule-strong); border-bottom:1px solid var(--surface);
+    box-shadow:inset 0 3px 0 var(--accent);
+  }
+  .tab:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+
+  .panel{ padding-top:22px; }
+  .panel[hidden]{ display:none !important; }
+
+  /* ---- blocks ---- */
+  .block{
+    background:var(--surface);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:16px;
+  }
+  .block + .block{ margin-top:18px; }
+  .block-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+    margin:0 0 14px;
+  }
+  h2{
+    font-size:15px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    margin:0;
+  }
+  .hint{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; color:var(--ink-3); margin:0; line-height:1.5;
+  }
+
+  /* ---- fields ---- */
+  .field label, .lbl{
+    display:block;
+    font-size:11px; font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink-2); margin-bottom:6px;
+  }
+  .inp{ position:relative; display:block; }
+  .inp .fix{
+    position:absolute; top:0; bottom:0; display:flex; align-items:center;
+    font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:16px;
+    color:var(--ink-3); pointer-events:none;
+  }
+  .inp .fix.pre{ left:12px; }
+  .inp .fix.suf{ right:14px; font-size:13px; letter-spacing:.02em; }
+  input[type="text"]{
+    width:100%; min-width:0; height:56px;
+    background:var(--surface); color:var(--ink);
+    border:1px solid var(--rule-strong); border-radius:3px;
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:19px; font-variant-numeric:tabular-nums;
+    padding:0 12px; text-align:right;
+  }
+  input.has-pre{ padding-left:28px; }
+  input.has-suf{ padding-right:46px; }
+  input[type="text"]:focus{ outline:3px solid var(--focus); outline-offset:1px; border-color:var(--focus); }
+  input.cost{ background:var(--cost-tint); border-color:var(--cost-line); }
+  input.ref{ text-align:left; font-size:16px; height:50px; }
+
+  .duo{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .link-note{
+    display:flex; align-items:center; gap:8px;
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; color:var(--ink-3); margin:8px 0 0;
+  }
+  .link-note::before, .link-note::after{ content:""; height:1px; background:var(--rule); flex:1; }
+
+  /* ---- quantity break group ---- */
+  .breaks{
+    border:2px solid var(--edge); border-radius:3px;
+    background:var(--surface);
+    margin-top:20px;
+  }
+  .breaks-head{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:10px 14px; border-bottom:1px solid var(--rule);
+  }
+  .breaks-head h2{ color:var(--ink); }
+  .breaks-head .hint{ text-align:right; }
+  .brk{ padding:14px; }
+  .brk + .brk{ border-top:1px solid var(--rule); }
+  .brk-top{ display:grid; grid-template-columns:1.15fr 1fr; gap:12px; align-items:end; }
+  .brk-out{
+    margin-top:12px;
+    background:var(--sell-tint); border:1px solid var(--sell-line); border-radius:3px;
+    padding:10px 12px;
+    display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .sell{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:28px; font-weight:600; color:var(--sell-ink);
+    font-variant-numeric:tabular-nums; letter-spacing:-.01em;
+  }
+  .sell .per{ font-size:12px; font-weight:400; letter-spacing:.06em; text-transform:uppercase; }
+  .exact{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; color:var(--sell-ink); opacity:.8;
+  }
+  .stats{ display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin:12px 0 0; }
+  .stats > div{ min-width:0; }
+  .stats dt{
+    font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-3); margin:0 0 3px;
+  }
+  .stats dd{
+    margin:0; font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:15px; font-variant-numeric:tabular-nums; color:var(--ink);
+    overflow-wrap:anywhere;
+  }
+  .stats dd.margin{ color:var(--accent); font-weight:500; }
+  .brk.off .brk-out, .brk.off .stats{ opacity:.4; }
+
+  /* ---- quote out ---- */
+  .quote{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:12.5px; line-height:1.65; white-space:pre-wrap;
+    background:var(--surface-2); border:1px solid var(--rule); border-radius:3px;
+    padding:12px; margin:0; color:var(--ink);
+    overflow-x:auto; user-select:all; -webkit-user-select:all;
+  }
+  .btn{
+    appearance:none; width:100%; min-height:52px; margin-top:12px;
+    background:var(--ink); color:var(--paper);
+    border:1px solid var(--ink); border-radius:3px;
+    font:600 14px/1 "Archivo", sans-serif; letter-spacing:.06em; text-transform:uppercase;
+    cursor:pointer;
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+  .btn.done{ background:var(--sell-line); border-color:var(--sell-line); color:#0F2208; }
+
+  /* ---- converter ---- */
+  .units{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+  .unit{
+    appearance:none; min-height:50px; cursor:pointer;
+    background:var(--surface-2); color:var(--ink-2);
+    border:1px solid var(--rule-strong); border-radius:3px;
+    font:600 15px/1 "Archivo", sans-serif; letter-spacing:.04em;
+  }
+  .unit[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--paper); }
+  .unit:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+
+  .dim{ display:grid; grid-template-columns:64px 1fr; gap:12px; align-items:center; }
+  .dim + .dim{ margin-top:12px; }
+  .dim .lbl{ margin:0; }
+  .dim .lbl small{ display:block; font-size:10px; letter-spacing:.06em; color:var(--ink-3); font-weight:400; }
+  .alt{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:12px; color:var(--ink-2); margin:6px 0 0; text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  .specline{
+    margin-top:16px; padding-top:14px; border-top:1px solid var(--rule);
+    display:grid; gap:8px;
+  }
+  .spec{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+  .spec .k{ font-size:11px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-2); }
+  .spec .v{
+    font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:16px;
+    font-variant-numeric:tabular-nums; text-align:right; overflow-wrap:anywhere;
+  }
+  .spec.lead .v{ font-size:19px; font-weight:600; }
+
+  footer{
+    margin-top:26px; padding-top:14px; border-top:1px solid var(--rule);
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; color:var(--ink-3); line-height:1.7;
+  }
+
+  @media (max-width:359px){
+    .stats{ grid-template-columns:1fr 1fr; }
+    .brk-top{ grid-template-columns:1fr 1fr; }
+    .sell{ font-size:24px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="masthead">
+    <h1 class="wordmark">Van<span>&nbsp;/&nbsp;</span>Desk</h1>
+    <p class="standfirst">Pricing &amp; box specs, kerbside</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Tools">
+    <button class="tab" id="tab-price" role="tab" aria-selected="true" aria-controls="panel-price" type="button">Margin</button>
+    <button class="tab" id="tab-size" role="tab" aria-selected="false" aria-controls="panel-size" type="button">Box size</button>
+  </div>
+
+  <!-- ============ MARGIN ============ -->
+  <section class="panel" id="panel-price" role="tabpanel" aria-labelledby="tab-price">
+
+    <div class="block">
+      <div class="block-head">
+        <h2>Cost price</h2>
+        <p class="hint">Type either box</p>
+      </div>
+
+      <div class="duo">
+        <div class="field">
+          <label for="cost-unit">Per unit</label>
+          <span class="inp">
+            <span class="fix pre">£</span>
+            <input type="text" id="cost-unit" class="cost has-pre" inputmode="decimal" autocomplete="off" value="0.48">
+          </span>
+        </div>
+        <div class="field">
+          <label for="cost-k">Per 1000</label>
+          <span class="inp">
+            <span class="fix pre">£</span>
+            <input type="text" id="cost-k" class="cost has-pre" inputmode="decimal" autocomplete="off" value="480.00">
+          </span>
+        </div>
+      </div>
+      <p class="link-note">linked both ways</p>
+
+      <div class="field" style="margin-top:14px">
+        <label for="ref">Item / box code <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
+        <input type="text" id="ref" class="ref" autocomplete="off" value="DWC-12 · SPL222754/1" placeholder="e.g. DWC-12">
+      </div>
+    </div>
+
+    <div class="breaks">
+      <div class="breaks-head">
+        <h2>Quantity breaks</h2>
+        <p class="hint">sell = cost × (1 + %)</p>
+      </div>
+      <div id="brk-rows"></div>
+    </div>
+
+    <div class="block" style="margin-top:18px">
+      <div class="block-head">
+        <h2>Quote lines</h2>
+        <p class="hint">for email or WhatsApp</p>
+      </div>
+      <pre class="quote" id="quote-out"></pre>
+      <button class="btn" id="copy-btn" type="button">Copy quote</button>
+    </div>
+
+    <footer>
+      Sell price rounds to the penny, and line totals use that rounded price, so the maths matches what the customer multiplies.
+      True margin = (sell − cost) ÷ sell.
+      Example figures are the DWC-12 line: type over them.
+    </footer>
+  </section>
+
+  <!-- ============ BOX SIZE ============ -->
+  <section class="panel" id="panel-size" role="tabpanel" aria-labelledby="tab-size" hidden>
+
+    <div class="block">
+      <div class="block-head">
+        <h2>Type in</h2>
+        <p class="hint">switch keeps the box</p>
+      </div>
+
+      <div class="units" role="group" aria-label="Input unit">
+        <button class="unit" type="button" data-unit="mm" aria-pressed="true">mm</button>
+        <button class="unit" type="button" data-unit="cm" aria-pressed="false">cm</button>
+        <button class="unit" type="button" data-unit="in" aria-pressed="false">inches</button>
+      </div>
+
+      <div class="dim">
+        <span class="lbl" id="lbl-l">Length<small>internal</small></span>
+        <div>
+          <span class="inp">
+            <span class="fix suf" data-suffix>mm</span>
+            <input type="text" id="dim-l" class="has-suf" inputmode="decimal" autocomplete="off" value="457" aria-labelledby="lbl-l">
+          </span>
+          <p class="alt" id="alt-l"></p>
+        </div>
+      </div>
+
+      <div class="dim">
+        <span class="lbl" id="lbl-w">Width<small>internal</small></span>
+        <div>
+          <span class="inp">
+            <span class="fix suf" data-suffix>mm</span>
+            <input type="text" id="dim-w" class="has-suf" inputmode="decimal" autocomplete="off" value="305" aria-labelledby="lbl-w">
+          </span>
+          <p class="alt" id="alt-w"></p>
+        </div>
+      </div>
+
+      <div class="dim">
+        <span class="lbl" id="lbl-h">Height<small>internal</small></span>
+        <div>
+          <span class="inp">
+            <span class="fix suf" data-suffix>mm</span>
+            <input type="text" id="dim-h" class="has-suf" inputmode="decimal" autocomplete="off" value="305" aria-labelledby="lbl-h">
+          </span>
+          <p class="alt" id="alt-h"></p>
+        </div>
+      </div>
+
+      <div class="specline">
+        <div class="spec lead"><span class="k">L × W × H mm</span><span class="v" id="spec-mm">—</span></div>
+        <div class="spec"><span class="k">Centimetres</span><span class="v" id="spec-cm">—</span></div>
+        <div class="spec"><span class="k">Inches</span><span class="v" id="spec-in">—</span></div>
+        <div class="spec"><span class="k">Cube</span><span class="v" id="spec-vol">—</span></div>
+      </div>
+
+      <button class="btn" id="copy-spec" type="button">Copy spec</button>
+    </div>
+
+    <footer>
+      1 inch = 25.4 mm exactly. Corrugated is quoted internal L × W × H in millimetres, so the mm line is the one to give the box plant.
+      Example figures are an 18 × 12 × 12 in case.
+    </footer>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var $ = function(id){ return document.getElementById(id); };
+  var MM_PER_IN = 25.4;
+
+  function toNum(s){
+    var v = parseFloat(String(s == null ? "" : s).replace(/[^0-9.\-]/g, ""));
+    return isFinite(v) ? v : NaN;
+  }
+  function money(n, dp){
+    if (!isFinite(n)) return "—";
+    return "£" + n.toLocaleString("en-GB", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  }
+  function trim(n, dp){
+    if (!isFinite(n)) return "—";
+    return n.toLocaleString("en-GB", { maximumFractionDigits: dp });
+  }
+
+  /* ---------------- Margin calculator ---------------- */
+
+  var BREAKS = [
+    { id: "a", qty: "800",  pct: "40" },
+    { id: "b", qty: "1600", pct: "55" },
+    { id: "c", qty: "3000", pct: "30" }
+  ];
+
+  var rowsHost = $("brk-rows");
+  rowsHost.innerHTML = BREAKS.map(function(b){
+    return '' +
+    '<div class="brk" id="brk-' + b.id + '">' +
+      '<div class="brk-top">' +
+        '<div class="field">' +
+          '<label for="qty-' + b.id + '">Quantity</label>' +
+          '<span class="inp"><input type="text" id="qty-' + b.id + '" inputmode="numeric" autocomplete="off" value="' + b.qty + '"></span>' +
+        '</div>' +
+        '<div class="field">' +
+          '<label for="pct-' + b.id + '">Markup</label>' +
+          '<span class="inp"><span class="fix suf">%</span><input type="text" id="pct-' + b.id + '" class="has-suf" inputmode="decimal" autocomplete="off" value="' + b.pct + '"></span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="brk-out">' +
+        '<span class="sell" id="sell-' + b.id + '">—</span>' +
+        '<span class="exact" id="exact-' + b.id + '"></span>' +
+      '</div>' +
+      '<dl class="stats">' +
+        '<div><dt>Line total</dt><dd id="tot-' + b.id + '">—</dd></div>' +
+        '<div><dt>Line profit</dt><dd id="pro-' + b.id + '">—</dd></div>' +
+        '<div><dt>True margin</dt><dd class="margin" id="mar-' + b.id + '">—</dd></div>' +
+      '</dl>' +
+    '</div>';
+  }).join("");
+
+  var costUnit = $("cost-unit"), costK = $("cost-k");
+
+  function syncCost(from){
+    var v;
+    if (from === "unit"){
+      v = toNum(costUnit.value);
+      if (document.activeElement !== costK) costK.value = isFinite(v) ? (v * 1000).toFixed(2) : "";
+    } else {
+      v = toNum(costK.value);
+      if (document.activeElement !== costUnit) costUnit.value = isFinite(v) ? (v / 1000).toFixed(4).replace(/0+$/, "").replace(/\.$/, ".0") : "";
+    }
+  }
+
+  function renderPrice(){
+    var cost = toNum(costUnit.value);
+    var lines = [];
+
+    BREAKS.forEach(function(b){
+      var qty = toNum($("qty-" + b.id).value);
+      var pct = toNum($("pct-" + b.id).value);
+      var row = $("brk-" + b.id);
+      var ok = isFinite(cost) && cost > 0 && isFinite(pct);
+
+      if (!ok){
+        row.classList.add("off");
+        $("sell-" + b.id).textContent = "—";
+        $("exact-" + b.id).textContent = "";
+        $("tot-" + b.id).textContent = "—";
+        $("pro-" + b.id).textContent = "—";
+        $("mar-" + b.id).textContent = "—";
+        return;
+      }
+      row.classList.remove("off");
+
+      var exact = cost * (1 + pct / 100);
+      var sell = Math.round(exact * 100) / 100;
+      var margin = sell > 0 ? (sell - cost) / sell * 100 : 0;
+
+      $("sell-" + b.id).innerHTML = money(sell, 2) + ' <span class="per">per unit</span>';
+      $("exact-" + b.id).textContent = Math.abs(exact - sell) > 1e-9 ? "exact " + money(exact, 4) : "exact to the penny";
+      $("mar-" + b.id).textContent = margin.toFixed(1) + "%";
+
+      if (isFinite(qty) && qty > 0){
+        $("tot-" + b.id).textContent = money(sell * qty, 2);
+        $("pro-" + b.id).textContent = money((sell - cost) * qty, 2);
+        lines.push(
+          String(Math.round(qty)).padStart(6, " ") + "   " +
+          money(sell, 2).padStart(8, " ") + " ea   " +
+          money(sell * qty, 2).padStart(10, " ")
+        );
+      } else {
+        $("tot-" + b.id).textContent = "—";
+        $("pro-" + b.id).textContent = "—";
+      }
+    });
+
+    var ref = $("ref").value.trim();
+    var head = ref ? ref : "Quotation";
+    var out = head + "\n" + "-".repeat(Math.max(head.length, 12)) + "\n";
+    out += lines.length
+      ? "   QTY      PRICE          TOTAL\n" + lines.join("\n")
+      : "Enter a cost price and quantities.";
+    $("quote-out").textContent = out;
+  }
+
+  costUnit.addEventListener("input", function(){ syncCost("unit"); renderPrice(); });
+  costK.addEventListener("input", function(){ syncCost("k"); renderPrice(); });
+  $("ref").addEventListener("input", renderPrice);
+  BREAKS.forEach(function(b){
+    $("qty-" + b.id).addEventListener("input", renderPrice);
+    $("pct-" + b.id).addEventListener("input", renderPrice);
+  });
+
+  /* ---------------- Box size converter ---------------- */
+
+  var unit = "mm";
+  var DIMS = ["l", "w", "h"];
+
+  function factor(u){ return u === "mm" ? 1 : (u === "cm" ? 10 : MM_PER_IN); }
+
+  function fmt(mm, u){
+    if (!isFinite(mm)) return "—";
+    if (u === "mm") return trim(mm, 1) + " mm";
+    if (u === "cm") return trim(mm / 10, 2) + " cm";
+    return trim(mm / MM_PER_IN, 2) + " in";
+  }
+
+  function renderSize(){
+    var mm = {};
+    DIMS.forEach(function(d){
+      var v = toNum($("dim-" + d).value);
+      mm[d] = isFinite(v) ? v * factor(unit) : NaN;
+      var others = ["mm", "cm", "in"].filter(function(u){ return u !== unit; });
+      $("alt-" + d).textContent = isFinite(mm[d])
+        ? others.map(function(u){ return fmt(mm[d], u); }).join("   ·   ")
+        : "";
+    });
+
+    var all = DIMS.every(function(d){ return isFinite(mm[d]) && mm[d] > 0; });
+    if (!all){
+      $("spec-mm").textContent = "—";
+      $("spec-cm").textContent = "—";
+      $("spec-in").textContent = "—";
+      $("spec-vol").textContent = "—";
+      return;
+    }
+
+    $("spec-mm").textContent = DIMS.map(function(d){ return trim(Math.round(mm[d]), 0); }).join(" × ");
+    $("spec-cm").textContent = DIMS.map(function(d){ return trim(mm[d] / 10, 1); }).join(" × ");
+    $("spec-in").textContent = DIMS.map(function(d){ return trim(mm[d] / MM_PER_IN, 2); }).join(" × ");
+
+    var litres = (mm.l * mm.w * mm.h) / 1e6;
+    $("spec-vol").textContent = trim(litres, 1) + " litres   ·   " + trim(litres / 28.3168466, 2) + " ft³";
+  }
+
+  function setUnit(next){
+    if (next === unit) return;
+    var oldF = factor(unit), newF = factor(next);
+    DIMS.forEach(function(d){
+      var v = toNum($("dim-" + d).value);
+      if (isFinite(v)){
+        var conv = v * oldF / newF;
+        $("dim-" + d).value = next === "in" ? conv.toFixed(2) : trim(conv, 1);
+      }
+    });
+    unit = next;
+    Array.prototype.forEach.call(document.querySelectorAll(".unit"), function(btn){
+      btn.setAttribute("aria-pressed", String(btn.dataset.unit === unit));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-suffix]"), function(el){
+      el.textContent = unit;
+    });
+    renderSize();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".unit"), function(btn){
+    btn.addEventListener("click", function(){ setUnit(btn.dataset.unit); });
+  });
+  DIMS.forEach(function(d){ $("dim-" + d).addEventListener("input", renderSize); });
+
+  /* ---------------- Copy ---------------- */
+
+  function copyText(text, btn, label){
+    var restore = btn.textContent;
+    function flash(msg, ok){
+      btn.textContent = msg;
+      if (ok) btn.classList.add("done");
+      setTimeout(function(){ btn.textContent = restore; btn.classList.remove("done"); }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(
+        function(){ flash(label + " copied", true); },
+        function(){ flash("Tap and hold the text to copy", false); }
+      );
+    } else {
+      flash("Tap and hold the text to copy", false);
+    }
+  }
+
+  $("copy-btn").addEventListener("click", function(){
+    copyText($("quote-out").textContent, this, "Quote");
+  });
+  $("copy-spec").addEventListener("click", function(){
+    var ref = $("ref").value.trim();
+    var txt = (ref ? ref + "\n" : "") + $("spec-mm").textContent + " mm (L × W × H internal)\n" +
+              $("spec-in").textContent + " in";
+    copyText(txt, this, "Spec");
+  });
+
+  /* ---------------- Tabs ---------------- */
+
+  var tabs = [$("tab-price"), $("tab-size")];
+  tabs.forEach(function(tab, i){
+    tab.addEventListener("click", function(){
+      tabs.forEach(function(t, j){
+        t.setAttribute("aria-selected", String(i === j));
+        $(t.getAttribute("aria-controls")).hidden = (i !== j);
+      });
+    });
+  });
+
+  renderPrice();
+  renderSize();
+})();
+</script>
+</body>
+</html>

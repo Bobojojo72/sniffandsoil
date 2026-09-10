@@ -196,14 +196,60 @@
     margin-top:20px;
   }
   .breaks-head{
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:10px 14px; border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between; gap:10px 12px;
+    flex-wrap:wrap; padding:12px 14px; border-bottom:1px solid var(--rule);
   }
   .breaks-head h2{ color:var(--ink); }
-  .breaks-head .hint{ text-align:right; }
+  .breaks-note{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; color:var(--ink-3); margin:0;
+    padding:8px 14px; border-bottom:1px solid var(--rule); background:var(--surface-2);
+  }
+  .basis{ display:flex; gap:6px; }
+  .basis button{
+    appearance:none; cursor:pointer; min-height:34px; padding:0 10px;
+    background:var(--surface-2); color:var(--ink-2);
+    border:1px solid var(--rule-strong); border-radius:3px;
+    font:600 12px/1 "Archivo", sans-serif; letter-spacing:.03em; white-space:nowrap;
+  }
+  .basis button[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--paper); }
+  .basis button:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+
   .brk{ padding:14px; }
   .brk + .brk{ border-top:1px solid var(--rule); }
-  .brk-top{ display:grid; grid-template-columns:1.15fr 1fr; gap:12px; align-items:end; }
+  .brk-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+  .brk-n{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; letter-spacing:.10em; text-transform:uppercase; color:var(--edge); font-weight:500;
+  }
+  .rm{
+    appearance:none; background:none; border:none; cursor:pointer; padding:6px 2px;
+    font:600 11px/1 "Archivo", sans-serif; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-3); text-decoration:underline; text-underline-offset:3px;
+  }
+  .rm:hover{ color:var(--accent); }
+  .rm:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+  .brk-top{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; align-items:end; }
+  .brk-top input{ font-size:17px; padding:0 10px; }
+  .brk-top .fix{ font-size:12px; }
+  .brk-top .fix.pre{ left:9px; }
+  .brk-top .fix.suf{ right:9px; }
+  .brk-top input.has-pre{ padding-left:22px; }
+  .brk-top input.has-suf{ padding-right:26px; }
+  .alt-cost{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px; color:var(--ink-3); margin:6px 0 0; text-align:right;
+    font-variant-numeric:tabular-nums; min-height:15px;
+  }
+  .addrow{
+    appearance:none; width:100%; min-height:48px; cursor:pointer;
+    background:var(--surface); color:var(--ink-2);
+    border:none; border-top:1px solid var(--rule);
+    font:600 13px/1 "Archivo", sans-serif; letter-spacing:.06em; text-transform:uppercase;
+  }
+  .addrow:hover{ color:var(--ink); }
+  .addrow:focus-visible{ outline:3px solid var(--focus); outline-offset:-3px; }
+  .addrow[disabled]{ opacity:.4; cursor:default; }
   .brk-out{
     margin-top:12px;
     background:var(--sell-tint); border:1px solid var(--sell-line); border-radius:3px;
@@ -291,9 +337,10 @@
     font-size:11px; color:var(--ink-3); line-height:1.7;
   }
 
-  @media (max-width:359px){
+  @media (max-width:369px){
     .stats{ grid-template-columns:1fr 1fr; }
     .brk-top{ grid-template-columns:1fr 1fr; }
+    .brk-top .f-pct{ grid-column:1 / -1; }
     .sell{ font-size:24px; }
   }
   @media (prefers-reduced-motion:reduce){
@@ -319,40 +366,26 @@
 
     <div class="block">
       <div class="block-head">
-        <h2>Cost price</h2>
-        <p class="hint">Type either box</p>
+        <h2>Item</h2>
+        <p class="hint">shown on the quote</p>
       </div>
-
-      <div class="duo">
-        <div class="field">
-          <label for="cost-unit">Per unit</label>
-          <span class="inp">
-            <span class="fix pre">£</span>
-            <input type="text" id="cost-unit" class="cost has-pre" inputmode="decimal" autocomplete="off" value="0.48">
-          </span>
-        </div>
-        <div class="field">
-          <label for="cost-k">Per 1000</label>
-          <span class="inp">
-            <span class="fix pre">£</span>
-            <input type="text" id="cost-k" class="cost has-pre" inputmode="decimal" autocomplete="off" value="480.00">
-          </span>
-        </div>
-      </div>
-      <p class="link-note">linked both ways</p>
-
-      <div class="field" style="margin-top:14px">
+      <div class="field">
         <label for="ref">Item / box code <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
-        <input type="text" id="ref" class="ref" autocomplete="off" value="DWC-12 · SPL222754/1" placeholder="e.g. DWC-12">
+        <input type="text" id="ref" class="ref" autocomplete="off" value="DWC-12 &#183; SPL222754/1" placeholder="e.g. DWC-12">
       </div>
     </div>
 
     <div class="breaks">
       <div class="breaks-head">
-        <h2>Quantity breaks</h2>
-        <p class="hint">sell = cost × (1 + %)</p>
+        <h2>Price breaks</h2>
+        <div class="basis" role="group" aria-label="Supplier cost basis">
+          <button type="button" data-basis="unit" aria-pressed="true">Cost per unit</button>
+          <button type="button" data-basis="k" aria-pressed="false">Per 1000</button>
+        </div>
       </div>
+      <p class="breaks-note">One row per supplier break. sell = cost &#215; (1 + %)</p>
       <div id="brk-rows"></div>
+      <button class="addrow" id="add-brk" type="button">+ Add a break</button>
     </div>
 
     <div class="block" style="margin-top:18px">
@@ -365,8 +398,9 @@
     </div>
 
     <footer>
-      Sell price rounds to the penny, and line totals use that rounded price, so the maths matches what the customer multiplies.
-      True margin = (sell − cost) ÷ sell.
+      Each break carries its own supplier cost, so a lower price at a higher quantity flows straight through to the markup and the profit.
+      Sell price rounds to the penny and line totals use that rounded price, so the maths matches what the customer multiplies.
+      True margin = (sell minus cost) divided by sell.
       Example figures are the DWC-12 line: type over them.
     </footer>
   </section>
@@ -458,91 +492,159 @@
 
   /* ---------------- Margin calculator ---------------- */
 
-  var BREAKS = [
-    { id: "a", qty: "800",  pct: "40" },
-    { id: "b", qty: "1600", pct: "55" },
-    { id: "c", qty: "3000", pct: "30" }
+  var MAX_BREAKS = 6;
+  var basis = "unit";               // "unit" = cost each, "k" = cost per 1000
+  var seq = 0;
+  var rows = [];                    // { id, el }
+  var rowsHost = $("brk-rows");
+
+  // Starting figures come from the DWC-12 sheet: three quantities at 48p each.
+  var SEED = [
+    { qty: "800",  cost: "0.48", pct: "40" },
+    { qty: "1600", cost: "0.48", pct: "55" },
+    { qty: "3000", cost: "0.48", pct: "30" },
+    { qty: "",     cost: "",     pct: "40" }
   ];
 
-  var rowsHost = $("brk-rows");
-  rowsHost.innerHTML = BREAKS.map(function(b){
-    return '' +
-    '<div class="brk" id="brk-' + b.id + '">' +
+  function costText(v){
+    if (!isFinite(v)) return "";
+    return String(parseFloat(v.toFixed(5)));
+  }
+
+  function makeRow(seed){
+    var id = "r" + (++seq);
+    var el = document.createElement("div");
+    el.className = "brk";
+    el.id = "brk-" + id;
+    el.innerHTML =
+      '<div class="brk-head">' +
+        '<span class="brk-n" data-n>Break</span>' +
+        '<button class="rm" type="button" data-rm>Remove</button>' +
+      '</div>' +
       '<div class="brk-top">' +
         '<div class="field">' +
-          '<label for="qty-' + b.id + '">Quantity</label>' +
-          '<span class="inp"><input type="text" id="qty-' + b.id + '" inputmode="numeric" autocomplete="off" value="' + b.qty + '"></span>' +
+          '<label for="qty-' + id + '">Quantity</label>' +
+          '<span class="inp"><input type="text" id="qty-' + id + '" inputmode="numeric" autocomplete="off" value="' + seed.qty + '"></span>' +
         '</div>' +
         '<div class="field">' +
-          '<label for="pct-' + b.id + '">Markup</label>' +
-          '<span class="inp"><span class="fix suf">%</span><input type="text" id="pct-' + b.id + '" class="has-suf" inputmode="decimal" autocomplete="off" value="' + b.pct + '"></span>' +
+          '<label for="cost-' + id + '">Cost</label>' +
+          '<span class="inp"><span class="fix pre">&pound;</span>' +
+          '<input type="text" id="cost-' + id + '" class="cost has-pre" inputmode="decimal" autocomplete="off" value="' + seed.cost + '"></span>' +
+        '</div>' +
+        '<div class="field f-pct">' +
+          '<label for="pct-' + id + '">Markup</label>' +
+          '<span class="inp"><span class="fix suf">%</span>' +
+          '<input type="text" id="pct-' + id + '" class="has-suf" inputmode="decimal" autocomplete="off" value="' + seed.pct + '"></span>' +
         '</div>' +
       '</div>' +
+      '<p class="alt-cost" id="altc-' + id + '"></p>' +
       '<div class="brk-out">' +
-        '<span class="sell" id="sell-' + b.id + '">—</span>' +
-        '<span class="exact" id="exact-' + b.id + '"></span>' +
+        '<span class="sell" id="sell-' + id + '">&mdash;</span>' +
+        '<span class="exact" id="exact-' + id + '"></span>' +
       '</div>' +
       '<dl class="stats">' +
-        '<div><dt>Line total</dt><dd id="tot-' + b.id + '">—</dd></div>' +
-        '<div><dt>Line profit</dt><dd id="pro-' + b.id + '">—</dd></div>' +
-        '<div><dt>True margin</dt><dd class="margin" id="mar-' + b.id + '">—</dd></div>' +
-      '</dl>' +
-    '</div>';
-  }).join("");
+        '<div><dt>Line total</dt><dd id="tot-' + id + '">&mdash;</dd></div>' +
+        '<div><dt>Line profit</dt><dd id="pro-' + id + '">&mdash;</dd></div>' +
+        '<div><dt>True margin</dt><dd class="margin" id="mar-' + id + '">&mdash;</dd></div>' +
+      '</dl>';
 
-  var costUnit = $("cost-unit"), costK = $("cost-k");
+    ["qty-", "cost-", "pct-"].forEach(function(pre){
+      el.querySelector("#" + pre + id).addEventListener("input", renderPrice);
+    });
+    el.querySelector("[data-rm]").addEventListener("click", function(){ removeRow(id); });
 
-  function syncCost(from){
-    var v;
-    if (from === "unit"){
-      v = toNum(costUnit.value);
-      if (document.activeElement !== costK) costK.value = isFinite(v) ? (v * 1000).toFixed(2) : "";
-    } else {
-      v = toNum(costK.value);
-      if (document.activeElement !== costUnit) costUnit.value = isFinite(v) ? (v / 1000).toFixed(4).replace(/0+$/, "").replace(/\.$/, ".0") : "";
-    }
+    return { id: id, el: el };
+  }
+
+  function renumber(){
+    rows.forEach(function(r, i){
+      r.el.querySelector("[data-n]").textContent = "Break " + (i + 1);
+      var rm = r.el.querySelector("[data-rm]");
+      rm.setAttribute("aria-label", "Remove break " + (i + 1));
+      rm.style.visibility = rows.length > 1 ? "visible" : "hidden";
+    });
+    $("add-brk").disabled = rows.length >= MAX_BREAKS;
+  }
+
+  function addRow(seed){
+    var r = makeRow(seed || { qty: "", cost: "", pct: "40" });
+    rows.push(r);
+    rowsHost.appendChild(r.el);
+    renumber();
+    renderPrice();
+    return r;
+  }
+
+  function removeRow(id){
+    var i = -1;
+    rows.forEach(function(r, k){ if (r.id === id) i = k; });
+    if (i < 0 || rows.length <= 1) return;
+    rowsHost.removeChild(rows[i].el);
+    rows.splice(i, 1);
+    renumber();
+    renderPrice();
+  }
+
+  function setBasis(next){
+    if (next === basis) return;
+    rows.forEach(function(r){
+      var f = $("cost-" + r.id);
+      var v = toNum(f.value);
+      if (isFinite(v)) f.value = costText(next === "k" ? v * 1000 : v / 1000);
+    });
+    basis = next;
+    Array.prototype.forEach.call(document.querySelectorAll(".basis button"), function(btn){
+      btn.setAttribute("aria-pressed", String(btn.dataset.basis === basis));
+    });
+    renderPrice();
   }
 
   function renderPrice(){
-    var cost = toNum(costUnit.value);
     var lines = [];
 
-    BREAKS.forEach(function(b){
-      var qty = toNum($("qty-" + b.id).value);
-      var pct = toNum($("pct-" + b.id).value);
-      var row = $("brk-" + b.id);
+    rows.forEach(function(r){
+      var id = r.id;
+      var qty = toNum($("qty-" + id).value);
+      var raw = toNum($("cost-" + id).value);
+      var pct = toNum($("pct-" + id).value);
+      var cost = isFinite(raw) ? (basis === "k" ? raw / 1000 : raw) : NaN;
       var ok = isFinite(cost) && cost > 0 && isFinite(pct);
 
+      $("altc-" + id).textContent = isFinite(cost) && cost > 0
+        ? (basis === "k" ? money(cost, 4) + " each" : money(cost * 1000, 2) + " per 1000")
+        : "";
+
       if (!ok){
-        row.classList.add("off");
-        $("sell-" + b.id).textContent = "—";
-        $("exact-" + b.id).textContent = "";
-        $("tot-" + b.id).textContent = "—";
-        $("pro-" + b.id).textContent = "—";
-        $("mar-" + b.id).textContent = "—";
+        r.el.classList.add("off");
+        $("sell-" + id).textContent = "—";
+        $("exact-" + id).textContent = "";
+        $("tot-" + id).textContent = "—";
+        $("pro-" + id).textContent = "—";
+        $("mar-" + id).textContent = "—";
         return;
       }
-      row.classList.remove("off");
+      r.el.classList.remove("off");
 
       var exact = cost * (1 + pct / 100);
       var sell = Math.round(exact * 100) / 100;
       var margin = sell > 0 ? (sell - cost) / sell * 100 : 0;
 
-      $("sell-" + b.id).innerHTML = money(sell, 2) + ' <span class="per">per unit</span>';
-      $("exact-" + b.id).textContent = Math.abs(exact - sell) > 1e-9 ? "exact " + money(exact, 4) : "exact to the penny";
-      $("mar-" + b.id).textContent = margin.toFixed(1) + "%";
+      $("sell-" + id).innerHTML = money(sell, 2) + ' <span class="per">per unit</span>';
+      $("exact-" + id).textContent = money(sell * 1000, 2) + " per 1000" +
+        (Math.abs(exact - sell) > 1e-9 ? "  ·  exact " + money(exact, 4) : "");
+      $("mar-" + id).textContent = margin.toFixed(1) + "%";
 
       if (isFinite(qty) && qty > 0){
-        $("tot-" + b.id).textContent = money(sell * qty, 2);
-        $("pro-" + b.id).textContent = money((sell - cost) * qty, 2);
+        $("tot-" + id).textContent = money(sell * qty, 2);
+        $("pro-" + id).textContent = money((sell - cost) * qty, 2);
         lines.push(
           String(Math.round(qty)).padStart(6, " ") + "   " +
           money(sell, 2).padStart(8, " ") + " ea   " +
-          money(sell * qty, 2).padStart(10, " ")
+          money(sell * qty, 2).padStart(11, " ")
         );
       } else {
-        $("tot-" + b.id).textContent = "—";
-        $("pro-" + b.id).textContent = "—";
+        $("tot-" + id).textContent = "—";
+        $("pro-" + id).textContent = "—";
       }
     });
 
@@ -550,18 +652,17 @@
     var head = ref ? ref : "Quotation";
     var out = head + "\n" + "-".repeat(Math.max(head.length, 12)) + "\n";
     out += lines.length
-      ? "   QTY      PRICE          TOTAL\n" + lines.join("\n")
-      : "Enter a cost price and quantities.";
+      ? "   QTY      PRICE           TOTAL\n" + lines.join("\n")
+      : "Enter a quantity, a cost and a markup.";
     $("quote-out").textContent = out;
   }
 
-  costUnit.addEventListener("input", function(){ syncCost("unit"); renderPrice(); });
-  costK.addEventListener("input", function(){ syncCost("k"); renderPrice(); });
   $("ref").addEventListener("input", renderPrice);
-  BREAKS.forEach(function(b){
-    $("qty-" + b.id).addEventListener("input", renderPrice);
-    $("pct-" + b.id).addEventListener("input", renderPrice);
+  $("add-brk").addEventListener("click", function(){ addRow(); });
+  Array.prototype.forEach.call(document.querySelectorAll(".basis button"), function(btn){
+    btn.addEventListener("click", function(){ setBasis(btn.dataset.basis); });
   });
+  SEED.forEach(function(seed){ addRow(seed); });
 
   /* ---------------- Box size converter ---------------- */
 
@@ -675,5 +776,6 @@
   renderSize();
 })();
 </script>
+
 </body>
 </html>

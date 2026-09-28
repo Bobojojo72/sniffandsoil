@@ -1,217 +1,496 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
-  <title>Sniff & Soil | Eco-Friendly Treats, Cards & Gifts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sniff & Soil | Eco-Friendly Treats, Cards & Gifts</title>
   <meta name="description" content="Sniff & Soil creates eco-friendly dog treats, witty greeting cards, and gift-ready goodies for animal lovers who care about the planet." />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#eeefe9" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1b1c17" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" type="image/png" href="assets/sniff-line.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <style>
+    :root {
+      --canvas: #eeefe9;
+      --surface: #fbfbf8;
+      --ink: #23251d;
+      --body: #4d4f46;
+      --mute: #6c6e63;
+      --hairline: #cfd1c6;
+      --leaf: #7ecd43;
+      --leaf-deep: #5fa92c;
+      --on-leaf: #1d2a12;
+      --shadow: 0 1px 2px rgb(35 37 29 / .10), 0 10px 24px -8px rgb(35 37 29 / .22);
+      --shadow-lift: 0 2px 4px rgb(35 37 29 / .10), 0 22px 40px -10px rgb(35 37 29 / .32);
+      --radius: 6px;
+      --display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+      --text: "Figtree", system-ui, sans-serif;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --canvas: #1b1c17;
+        --surface: #24261f;
+        --ink: #eeefe9;
+        --body: #c9cbbf;
+        --mute: #a3a598;
+        --hairline: #3d4035;
+        --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 28px -8px rgb(0 0 0 / .6);
+        --shadow-lift: 0 2px 4px rgb(0 0 0 / .4), 0 24px 44px -10px rgb(0 0 0 / .7);
+        color-scheme: dark;
+      }
+      .doodle { filter: invert(.94) sepia(.08); }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scrollbar-color: var(--hairline) var(--canvas); }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--body);
+      font: 400 1.0625rem/1.6 var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--leaf); color: var(--on-leaf); }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+    img { display: block; max-width: 100%; }
+    a { color: var(--ink); text-underline-offset: .2em; text-decoration-thickness: 1px; }
+    a:hover { text-decoration-color: var(--leaf-deep); }
+
+    h1, h2, h3 {
+      font-family: var(--display);
+      color: var(--ink);
+      letter-spacing: -.025em;
+      line-height: 1.05;
+      margin: 0;
+      text-wrap: balance;
+    }
+    h2 { font-size: clamp(2rem, 1.3rem + 2.6vw, 3.25rem); font-weight: 800; }
+    p { margin: 0; max-width: 62ch; text-wrap: pretty; }
+
+    .wrap { width: min(1180px, 100% - 2.5rem); margin-inline: auto; }
+    section { padding-block: clamp(4rem, 3rem + 5vw, 7.5rem); }
+
+    /* Buttons: full pill everywhere, panels 6px */
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .8rem 1.4rem;
+      border-radius: 999px;
+      font: 600 1rem/1 var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1.5px solid var(--ink);
+      transition: transform .2s var(--ease), background-color .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .btn:active { transform: translateY(1px) scale(.98); }
+    .btn-leaf { background: var(--leaf); color: var(--on-leaf); border-color: var(--on-leaf); box-shadow: 0 2px 0 var(--on-leaf); }
+    .btn-leaf:hover { background: #8fd95a; }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn-ghost:hover { background: var(--surface); }
+    .btn i { font-size: 1.15em; }
+
+    /* Sniff rig: body + tail cut from the logo's one-line dog (tools/make_assets.py).
+       .tail wags from the point it joins the body. */
+    .sniff-rig { display: inline-block; position: relative; line-height: 0; }
+    .sniff-rig .pose { display: block; position: relative; }
+    .sniff-rig img { display: block; width: 100%; height: auto; }
+    .sniff-rig .tail { position: absolute; inset: 0; transform-origin: 19.7% 86.7%; }
+    @media (prefers-reduced-motion: no-preference) {
+      .sniff-rig.wag .tail { animation: wag .36s ease-in-out 4; }
+      @keyframes wag { 0%, 100% { rotate: 0deg; } 30% { rotate: 34deg; } 70% { rotate: -10deg; } }
+    }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in srgb, var(--canvas) 92%, transparent);
+      backdrop-filter: saturate(1.2) blur(8px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 1rem; }
+    .nav-logo img { height: 54px; width: auto; }
+    .nav ul { display: flex; align-items: center; gap: 1.75rem; list-style: none; margin: 0; padding: 0; }
+    .nav ul a { text-decoration: none; font-weight: 600; font-size: .95rem; }
+    .nav ul a:not(.btn):hover { text-decoration: underline; }
+    .nav .btn { padding: .55rem 1.1rem; font-size: .95rem; }
+
+    /* Hero */
+    .hero { padding-block: clamp(2.5rem, 1rem + 5vw, 5.5rem) clamp(3rem, 2rem + 4vw, 6rem); }
+    .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
+    .hero h1 { font-size: clamp(2.6rem, 1.6rem + 3.4vw, 4.25rem); font-weight: 800; letter-spacing: -.022em; }
+    .hero p { margin-top: 1.4rem; font-size: 1.2rem; color: var(--body); max-width: 40ch; }
+    .hero .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .soon { display: inline-block; margin-top: 1.25rem; font-size: .95rem; color: var(--mute); }
+
+    .fan { --cw: clamp(180px, 17vw, 240px); position: relative; height: clamp(360px, 32vw, 470px); }
+    .fan .card { position: absolute; left: 50%; top: 50%; width: var(--cw); }
+    .fan .card img, .line img { border-radius: 3px; box-shadow: var(--shadow); aspect-ratio: 800 / 1131; width: 100%; height: auto; background: #f5f4f0; }
+    .fan .card { transition: transform .45s var(--ease); }
+    .fan .card img { transition: box-shadow .45s var(--ease); }
+    .fan .c1 { transform: translate(-132%, -50%) rotate(-8deg); }
+    .fan .c2 { transform: translate(-50%, -60%) rotate(3deg); }
+    .fan .c3 { transform: translate(32%, -42%) rotate(5deg); }
+    .fan .card:hover { z-index: 3; }
+    .fan .card:hover img { box-shadow: var(--shadow-lift); }
+    .fan .c1:hover { transform: translate(-132%, -56%) rotate(-3deg); }
+    .fan .c2:hover { transform: translate(-50%, -66%) rotate(0deg); }
+    .fan .c3:hover { transform: translate(32%, -48%) rotate(1deg); }
+    .fan .sniff { position: absolute; width: 96px; height: auto; left: calc(50% - 10px); bottom: calc(50% + var(--cw) * .86 - 4px); z-index: 4; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .fan .card { animation: deal .9s var(--ease) both; }
+      .fan .c2 { animation-delay: .08s; }
+      .fan .c3 { animation-delay: .16s; }
+      .fan .sniff { animation: appear .5s ease-out .8s both; }
+      @keyframes deal { from { opacity: 0; translate: 0 60px; rotate: 8deg; } }
+      @keyframes appear { from { opacity: 0; } }
+    }
+
+    /* The washing line of cards */
+    #cards { padding-top: clamp(1rem, 2vw, 2.5rem); }
+    .cards-head p { font-size: 1.1rem; }
+    .line-scroll { margin-top: 3rem; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 1.5rem; scrollbar-width: thin; }
+    .line {
+      position: relative; display: flex; gap: clamp(1.25rem, 2.5vw, 2.25rem);
+      width: max-content; list-style: none; margin: 0;
+      padding: 1.25rem max(1.25rem, calc((100vw - 1180px) / 2)) 1rem;
+    }
+    /* Jute twine: two-tone twist */
+    .line::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 2rem; height: 3px; border-radius: 2px;
+      background: repeating-linear-gradient(115deg, #b8935f 0 3px, #8c6a3f 3px 5px);
+      box-shadow: 0 1px 1px rgb(60 40 20 / .25);
+    }
+    .line li { position: relative; width: clamp(170px, 18vw, 220px); padding-top: 1.5rem; scroll-snap-align: center; transform-origin: 50% 0; }
+    .line li:nth-child(odd) { rotate: -1.5deg; }
+    .line li:nth-child(even) { rotate: 1.2deg; }
+    /* Wooden clothes peg: split between the two halves, steel spring, birch grain */
+    .line li::before {
+      content: ""; position: absolute; top: .1rem; left: 50%; translate: -50% 0; z-index: 1;
+      width: 15px; height: 46px; border-radius: 4px 4px 5px 5px;
+      background:
+        linear-gradient(90deg, transparent 7px, rgb(92 62 30 / .6) 7px 8px, transparent 8px),
+        linear-gradient(180deg, transparent 13px, #7d8388 13px 14px, #d3d7da 14px 16px, #7d8388 16px 17px, transparent 17px),
+        repeating-linear-gradient(93deg, rgb(120 80 40 / .16) 0 1px, transparent 1px 3.5px),
+        linear-gradient(90deg, #c6975c, #e6c794 40%, #dcb57d 60%, #c8995f);
+      box-shadow: 0 2px 3px rgb(60 40 20 / .35), inset 0 -2px 0 rgb(92 62 30 / .18);
+    }
+    .line li:hover img { box-shadow: var(--shadow-lift); }
+    @media (prefers-reduced-motion: no-preference) {
+      .line li:hover { animation: swing 1.1s var(--ease); }
+      @keyframes swing { 30% { rotate: 3deg; } 60% { rotate: -1.5deg; } 100% { rotate: 0deg; } }
+    }
+    .line-note { margin-top: .5rem; font-size: .9rem; color: var(--mute); }
+
+    .ranges { margin-top: clamp(3.5rem, 6vw, 5.5rem); }
+    .ranges h3 { font-size: 1.1rem; font-family: var(--text); letter-spacing: 0; font-weight: 600; margin-bottom: 1rem; }
+    .range { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 2rem; padding-block: 1.5rem; border-top: 1px solid var(--hairline); align-items: baseline; }
+    .range:last-child { border-bottom: 1px solid var(--hairline); }
+    .range strong { font: 700 clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem)/1.1 var(--display); color: var(--ink); letter-spacing: -.02em; }
+
+    /* About */
+    .about { background: var(--surface); border-block: 1px solid var(--hairline); }
+    .about .wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+    .about p + p { margin-top: 1.1rem; }
+    .about h2 { margin-bottom: 1.5rem; }
+    .people { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
+    .people li { display: grid; grid-template-columns: auto 1fr; gap: .9rem; align-items: start; font-size: 1.1rem; color: var(--ink); }
+    .people i { font-size: 1.5rem; color: var(--leaf-deep); margin-top: .1rem; }
+    .people-intro { font-weight: 600; color: var(--ink); margin-bottom: 1.4rem; }
+    .about .doodle { width: 150px; margin-top: 2.5rem; rotate: 4deg; }
+
+    /* Treats: now and next */
+    .roadmap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
+    .step { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 1.6rem 1.6rem 1.8rem; background: var(--canvas); }
+    .step.now { background: var(--surface); box-shadow: var(--shadow); border-color: transparent; }
+    .step b { display: block; font: 700 1.4rem/1.15 var(--display); color: var(--ink); margin-bottom: .5rem; letter-spacing: -.01em; }
+    .step small { display: inline-flex; align-items: center; gap: .35rem; font-size: .9rem; font-weight: 600; color: var(--mute); margin-bottom: .9rem; }
+    .step.now small { color: var(--leaf-deep); }
+    .treats .aside { margin-top: 2rem; font-size: 1.1rem; }
+
+    /* Eco */
+    .eco .wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+    .eco h2 { margin-bottom: 1.25rem; }
+    .promises { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--surface); }
+    .promises li { padding: 1.4rem; display: grid; gap: .6rem; color: var(--ink); font-weight: 600; line-height: 1.35; }
+    .promises li:nth-child(odd) { border-right: 1px solid var(--hairline); }
+    .promises li:nth-child(-n+2) { border-bottom: 1px solid var(--hairline); }
+    .promises i { font-size: 1.6rem; color: var(--leaf-deep); }
+
+    /* Join: the one committed colour field */
+    .join { padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 6vw, 6rem); }
+    .join-panel {
+      position: relative;
+      background: var(--leaf); color: var(--on-leaf);
+      border-radius: var(--radius);
+      padding: clamp(2rem, 5vw, 4.5rem);
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: end;
+      border: 1.5px solid var(--on-leaf);
+    }
+    .join-panel h2 { color: var(--on-leaf); }
+    .join-panel p { color: var(--on-leaf); margin-top: 1rem; font-size: 1.1rem; }
+    .perks { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .5rem; font-weight: 600; }
+    .perks li { display: flex; gap: .6rem; align-items: center; }
+    .signup-form { display: grid; gap: .5rem; }
+    .signup-form label { font-weight: 600; font-size: .95rem; }
+    .signup-form .row { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .signup-form input {
+      flex: 1 1 14rem; min-width: 0;
+      font: 400 1.05rem/1 var(--text); color: #23251d;
+      padding: .85rem 1.1rem; border-radius: 999px;
+      border: 1.5px solid var(--on-leaf); background: #fbfbf8;
+    }
+    .signup-form input::placeholder { color: #5f6157; }
+    .signup-form input:focus-visible { outline: 3px solid var(--on-leaf); outline-offset: 2px; }
+    .signup-form .btn { background: var(--on-leaf); color: #f2f7ec; border-color: var(--on-leaf); }
+    .signup-form .btn:hover { background: #2c3d1e; }
+    .signup-form .hint { font-size: .85rem; margin-top: .25rem; }
+    .join-panel .doodle { position: absolute; right: clamp(1.5rem, 5vw, 4rem); bottom: calc(100% - 3px); width: 110px; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--hairline); padding-block: 2.5rem 3rem; font-size: .95rem; color: var(--mute); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
+    .logo-rig { position: relative; display: inline-block; }
+    .logo-rig picture img { height: 84px; width: auto; }
+    .logo-rig .sniff-rig { position: absolute; left: 85.62%; top: 11.02%; width: 9.98%; }
+
+    /* Tablet and phone */
+    @media (max-width: 900px) {
+      .hero .wrap, .about .wrap, .eco .wrap, .join-panel { grid-template-columns: 1fr; }
+      .fan { height: 340px; }
+      .fan { --cw: 170px; }
+      .range { grid-template-columns: 1fr; gap: .4rem; }
+    }
+    @media (max-width: 640px) {
+      .nav ul li:not(:last-child) { display: none; }
+      .nav-logo img { height: 36px; }
+      .hero p { font-size: 1.1rem; }
+      .fan { height: 300px; }
+      .fan { --cw: 118px; }
+      .fan .sniff { width: 70px; }
+      .roadmap, .promises { grid-template-columns: 1fr; }
+      .promises li:nth-child(odd) { border-right: 0; }
+      .promises li:not(:last-child) { border-bottom: 1px solid var(--hairline); }
+      .join-panel .doodle { width: 84px; }
+      footer .wrap { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="logo-block">
-        <div class="logo-circle">S&S</div>
-        <div class="logo-text">
-          <span class="brand-name">Sniff &amp; Soil</span>
-          <span class="brand-tagline">Eco treats, cheeky cards, happy humans.</span>
+<!--
+THESIS: The cards are the product and the joke, so the page is Sniff's sketchbook: real deadpan card fronts fanned, pegged and handled, with the one-line dog from the logo in the margins. Refuses the centred hero over three matching feature boxes.
+OWN-WORLD: pale olive-grey sketchbook canvas, olive-charcoal ink, off-white card stock with soft lift, thin olive hairlines, one leaf-green pill taken from the logo's leaf; Bricolage Grotesque display, Figtree text; pills for actions, 6px panels.
+STORY: see the actual cards, laugh, learn it is planet-kind and pre-launch, join the list.
+FIRST VIEWPORT: left, headline + one sentence + green "Join the pack"; right, three real cards fanned with Sniff sitting on the top card.
+FORM: PostHog-inspired sketchbook (user-pinned via Awesome Design MD), fused with the confirmed handwriting logo. Seed ce8f7705.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+
+<header class="nav">
+  <nav class="wrap" aria-label="Main">
+    <a class="nav-logo" href="#top" aria-label="Sniff and Soil home">
+      <picture>
+        <source srcset="assets/logo-cream.png" media="(prefers-color-scheme: dark)" />
+        <img src="assets/logo-ink.png" alt="Sniff and Soil, Pawsitively Sustainable" width="1000" height="250" />
+      </picture>
+    </a>
+    <ul>
+      <li><a href="#cards">Cards</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#treats">Treats</a></li>
+      <li><a href="#eco">Why eco?</a></li>
+      <li><a class="btn btn-leaf" href="#join">Join the pack</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Cards for people who talk to dogs at parties.</h1>
+        <p>Witty, planet-kind greeting cards from a tiny eco brand and one slightly feral dog.</p>
+        <div class="actions">
+          <a class="btn btn-leaf" href="#join">Join the pack <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+          <a class="btn btn-ghost" href="#cards">See the cards</a>
         </div>
+        <span class="soon">Launching soon. Early birds get first dibs.</span>
       </div>
-      <nav class="main-nav">
-        <a href="#about">About</a>
-        <a href="#cards">Cards</a>
-        <a href="#treats">Treats</a>
-        <a href="#eco">Why Eco?</a>
-        <a href="#join">Join the Pack</a>
-      </nav>
+
+      <div class="fan" aria-label="Three cards from the first range">
+        <figure class="card c1" style="margin:0"><img src="assets/cards/card-09.png" alt="Card: It seemed like a good idea." width="800" height="1131" /></figure>
+        <figure class="card c2" style="margin:0"><img src="assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" /></figure>
+        <figure class="card c3" style="margin:0"><img src="assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" /></figure>
+        <span class="sniff doodle sniff-rig" id="sniff-hero" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
+      </div>
     </div>
-  </header>
+  </section>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <h1>For people who love animals, laughter, and the planet.</h1>
-          <p>
-            Sniff &amp; Soil is a small-batch, eco-minded brand creating
-            witty greeting cards, sniff-worthy moments, and gift-ready goodies
-            that don’t trash the planet.
-          </p>
-          <div class="hero-actions">
-            <a href="#join" class="btn primary">Get early access</a>
-            <a href="#cards" class="btn ghost">Preview the card range</a>
-          </div>
-          <p class="hero-note">
-            Launching soon: Sniff-approved cards, gifts &amp; bundles. Limited early bird spots.
-          </p>
+  <section id="cards">
+    <div class="wrap cards-head">
+      <h2>Deadpan on the front. Feral in spirit.</h2>
+      <p>Nine designs from the first range. Artwork is still being finalised, so these may change before launch.</p>
+    </div>
+
+    <div class="line-scroll" tabindex="0" aria-label="The first card range, scroll sideways">
+      <ul class="line">
+        <li><img src="assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-03.png" alt="Card: Same again tomorrow." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-04.png" alt="Card: No regrets." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-05.png" alt="Card: Another year. Still obsessed." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-06.png" alt="Card: I remembered." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-07.png" alt="Card: I'd choose you again." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-09.png" alt="Card: It seemed like a good idea." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="assets/cards/card-10.png" alt="Card: We're a package deal." width="800" height="1131" loading="lazy" /></li>
+      </ul>
+    </div>
+
+    <div class="wrap ranges">
+      <h3>Three kinds of funny, all planet-kind.</h3>
+      <div class="range">
+        <strong>Absolutely Feral</strong>
+        <p>For the friend who is barely house-trained but you love them anyway. Bold captions, unapologetic humour.</p>
+      </div>
+      <div class="range">
+        <strong>Wholesome-but-Witty</strong>
+        <p>Warm, kind, and still a bit cheeky. Perfect for family, colleagues, and people who pretend to be sensible.</p>
+      </div>
+      <div class="range">
+        <strong>Cheeky Adult &amp; Dark Humour</strong>
+        <p>For the group chat you could never show HR. Smart, sharp, never cruel.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <div>
+        <h2>Who (or what) is Sniff &amp; Soil?</h2>
+        <p>Sniff &amp; Soil started with one slightly feral dog, a lot of eco guilt, and a complete lack of cards that felt genuinely funny and pet-obsessed.</p>
+        <p>Sniff is the official chaos mascot. The cards are for absolutely everyone.</p>
+        <span class="doodle sniff-rig" role="img" aria-label="Sniff, drawn in one line"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
+      </div>
+      <div>
+        <p class="people-intro">We're building a tiny-but-mighty brand for people who:</p>
+        <ul class="people">
+          <li><i class="ph ph-plant" aria-hidden="true"></i>Care what goes into their pets and out into the planet</li>
+          <li><i class="ph ph-smiley-wink" aria-hidden="true"></i>Prefer wicked humour over generic "best wishes"</li>
+          <li><i class="ph ph-storefront" aria-hidden="true"></i>Love small businesses and thoughtful details</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="treats" id="treats">
+    <div class="wrap">
+      <h2>Cards first. Treats are on the roadmap.</h2>
+      <div class="roadmap">
+        <div class="step now">
+          <small><i class="ph ph-envelope-simple" aria-hidden="true"></i>Launching first</small>
+          <b>The signature card range</b>
+          <p>Occasion cards, "absolutely feral" humour and wholesome options.</p>
         </div>
-        <div class="hero-card">
-          <div class="hero-card-inner">
-            <p class="hero-sticker">Coming soon</p>
-            <h2>Sniff &amp; Soil Launch Collection</h2>
-            <ul>
-              <li>🦴 Witty, pet-friendly greeting cards</li>
-              <li>🌱 Planet-kind materials &amp; packaging</li>
-              <li>🎁 Gift-ready bundles for pet people</li>
-              <li>🐾 Featuring Sniff, official chaos mascot</li>
-            </ul>
-            <p class="hero-small">
-              Built for people who send “just because” cards and talk to dogs at parties.
-            </p>
-          </div>
+        <div class="step">
+          <small><i class="ph ph-gift" aria-hidden="true"></i>On the roadmap</small>
+          <b>Gift boxes, treats and extras</b>
+          <p>Curated gift boxes, eco-conscious treats, and little extras for pet people. One step at a time, one wag at a time.</p>
         </div>
       </div>
-    </section>
+      <p class="aside">If you buy your dog a birthday cake and sign cards with their paw print, you're exactly who we're making this for.</p>
+    </div>
+  </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="section">
-      <div class="container two-col">
+  <section class="eco" id="eco">
+    <div class="wrap">
+      <div>
+        <h2>Planet-kind by design, not as an afterthought.</h2>
+        <p>We're building Sniff &amp; Soil around low-waste, recyclable and compostable choices wherever possible, from materials to packaging.</p>
+      </div>
+      <ul class="promises">
+        <li><i class="ph ph-recycle" aria-hidden="true"></i>Recyclable or compostable materials where possible</li>
+        <li><i class="ph ph-sparkle" aria-hidden="true"></i>No pointless plastic glitter nonsense</li>
+        <li><i class="ph ph-package" aria-hidden="true"></i>Thoughtful, minimal packaging</li>
+        <li><i class="ph ph-infinity" aria-hidden="true"></i>Designed with longevity, not landfill, in mind</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="join" id="join">
+    <div class="wrap">
+      <div class="join-panel">
+        <span class="doodle sniff-rig" id="sniff-join" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
         <div>
-          <h2>Who (or what) is Sniff &amp; Soil?</h2>
-          <p>
-            Sniff &amp; Soil started with one slightly feral dog, a lot of eco guilt, 
-            and a complete lack of cards that felt genuinely funny and pet-obsessed.
-          </p>
-          <p>
-            We’re building a tiny-but-mighty brand for people who:
-          </p>
-          <ul class="bullets">
-            <li>Care what goes into their pets and out into the planet</li>
-            <li>Prefer wicked humour over generic “best wishes”</li>
-            <li>Love small businesses and thoughtful details</li>
+          <h2>Join the pack.</h2>
+          <p>Be first to know when the card range drops, and get early bird offers.</p>
+          <ul class="perks">
+            <li><i class="ph ph-check" aria-hidden="true"></i>First access to new drops</li>
+            <li><i class="ph ph-check" aria-hidden="true"></i>Occasional test products and samples</li>
+            <li><i class="ph ph-check" aria-hidden="true"></i>A say in what we launch next</li>
           </ul>
         </div>
-        <div class="card muted">
-          <h3>What’s coming first?</h3>
-          <ul class="ticks">
-            <li>Signature Sniff &amp; Soil greeting card range</li>
-            <li>Occasion cards, “absolutely feral” humour &amp; wholesome options</li>
-            <li>Gift-ready bundles for dog people (and non-dog people)</li>
-          </ul>
-          <p class="small">
-            Treats, subscriptions &amp; more are in the roadmap. One step at a time, one wag at a time.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CARDS -->
-    <section id="cards" class="section alt">
-      <div class="container">
-        <h2>Cards that make people actually laugh.</h2>
-        <p class="section-intro">
-          Think: sarcastic, feral, wholesome-but-witty, and cheeky adult humour.
-          Sniff is the brand mascot, but the cards are for absolutely everyone.
-        </p>
-
-        <div class="grid-3">
-          <article class="card">
-            <h3>“Absolutely Feral” Range</h3>
-            <p>
-              For the friend who is barely house-trained but you love them anyway.
-              Bold captions, unapologetic humour, still planet-kind.
-            </p>
-          </article>
-          <article class="card">
-            <h3>Wholesome-but-Witty</h3>
-            <p>
-              Warm, kind, and still a bit cheeky. Perfect for family, colleagues,
-              and people who pretend to be sensible.
-            </p>
-          </article>
-          <article class="card">
-            <h3>Cheeky Adult &amp; Dark Humour</h3>
-            <p>
-              For the group chat you could never show HR. Smart, sharp,
-              never cruel – just enough chaos to keep it fun.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- TREATS / FUTURE PRODUCTS -->
-    <section id="treats" class="section">
-      <div class="container two-col">
-        <div>
-          <h2>Treats, gifts &amp; bundles (on the roadmap)</h2>
-          <p>
-            Sniff &amp; Soil is starting with cards, but the plan is bigger:
-            curated gift boxes, eco-conscious treats, and little extras for pet people.
-          </p>
-          <p>
-            If you’re the kind of person who buys your dog a birthday cake and
-            signs cards with their paw print… you’re exactly our audience.
-          </p>
-        </div>
-        <div class="card muted">
-          <h3>Want to help shape the range?</h3>
-          <p>
-            Early subscribers will get:
-          </p>
-          <ul class="ticks">
-            <li>First access to new drops</li>
-            <li>Occasional test products &amp; samples</li>
-            <li>A say in what we launch next</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ECO -->
-    <section id="eco" class="section alt">
-      <div class="container two-col">
-        <div>
-          <h2>Planet-kind by design, not as an afterthought.</h2>
-          <p>
-            We’re building Sniff &amp; Soil around low-waste, recyclable and
-            compostable choices wherever possible – from materials to packaging.
-          </p>
-        </div>
-        <div class="pill-list">
-          <span>Recyclable or compostable materials where possible</span>
-          <span>No pointless plastic glitter nonsense</span>
-          <span>Thoughtful, minimal packaging</span>
-          <span>Designed with longevity, not landfill, in mind</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- JOIN / EMAIL CAPTURE PLACEHOLDER -->
-    <section id="join" class="section join">
-      <div class="container">
-        <h2>Join the Sniff &amp; Soil early access list</h2>
-        <p class="section-intro">
-          Want to know when the first card range drops and get early bird offers?
-          Pop your email in below and we’ll keep you in the loop.
-        </p>
-
-        <!-- Replace this with a real form provider later (Formspree, Mailerlite, etc.) -->
         <form class="signup-form" action="mailto:info@sniffandsoil.co.uk" method="post" enctype="text/plain">
           <label for="email">Email address</label>
-          <input id="email" type="email" name="email" required placeholder="you@example.com" />
-          <button type="submit" class="btn primary">Count me in</button>
+          <div class="row">
+            <input id="email" type="email" name="email" required placeholder="you@example.com" autocomplete="email" />
+            <button type="submit" class="btn">Join the pack</button>
+          </div>
+          <span class="hint">For now this opens your email app. A proper mailing list is coming.</span>
         </form>
-
-        <p class="small">
-          This is a temporary setup using your email client. We’ll switch to a proper mailing list provider later.
-        </p>
       </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© <span id="year"></span> Sniff &amp; Soil. Built with muddy paws and clean conscience.</p>
-      <p class="footer-small">
-        Website hosted on GitHub Pages at <code>www.sniffandsoil.co.uk</code>.
-      </p>
     </div>
-    <script>
-      // Tiny enhancement: keep footer year current
-      document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
-  </footer>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo-rig" href="#top" aria-label="Back to top">
+      <picture>
+        <source srcset="assets/logo-cream-nodog.png" media="(prefers-color-scheme: dark)" />
+        <img src="assets/logo-ink-nodog.png" alt="Sniff and Soil, Pawsitively Sustainable" width="1000" height="250" loading="lazy" />
+      </picture>
+      <span class="doodle sniff-rig" id="sniff-footer" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
+    </a>
+    <p>&copy; <span id="year">2026</span> Sniff &amp; Soil. Built with muddy paws and a clean conscience.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Sniff wags his tail. Skipped entirely under reduced motion.
+  (() => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const rigs = [...document.querySelectorAll('.sniff-rig')];
+    const play = rig => rig.classList.add('wag');
+    rigs.forEach(rig => rig.addEventListener('animationend', e => {
+      if (e.animationName === 'appear') play(rig);
+      if (e.animationName === 'wag') rig.classList.remove('wag');
+    }));
+
+    // Every "Join the pack" button, and the email box, sets every Sniff wagging
+    document.querySelectorAll('.btn-leaf, .signup-form input, .signup-form .btn').forEach(el => {
+      el.addEventListener('pointerenter', () => rigs.forEach(r => play(r)));
+      el.addEventListener('focus', () => rigs.forEach(r => play(r)));
+    });
+    document.querySelector('.signup-form').addEventListener('submit', () => rigs.forEach(r => play(r)));
+
+    // Hovering near a Sniff makes that one wag
+    [['.fan', '#sniff-hero'], ['.about', '.about .sniff-rig'], ['.join-panel', '#sniff-join'], ['.logo-rig', '#sniff-footer']]
+      .forEach(([zone, dog]) => document.querySelector(zone).addEventListener('pointerenter', () => play(document.querySelector(dog))));
+
+    // The join and footer Sniffs wag the first time they come into view
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      play(e.target); io.unobserve(e.target);
+    }), { threshold: 1 });
+    ['#sniff-join', '#sniff-footer'].forEach(s => io.observe(document.querySelector(s)));
+  })();
+</script>
 </body>
 </html>

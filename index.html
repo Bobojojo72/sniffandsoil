@@ -388,7 +388,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <p>Sniff &amp; Soil started with one slightly feral dog, a lot of eco guilt, and a complete lack of cards that felt genuinely funny and pet-obsessed.</p>
         <p>Sniff is the official chaos mascot. The cards are for absolutely everyone.</p>
         <span class="doodle sniff-rig" role="img" aria-label="Sniff, drawn in one line"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
-        <span class="walker doodle" aria-hidden="true"><img class="w1" src="assets/sniff-walk-1.svg" alt="" width="792" height="703" /><img class="w2" src="assets/sniff-walk-2.svg" alt="" width="792" height="703" /></span>
       </div>
       <div>
         <p class="people-intro">We're building a tiny-but-mighty brand for people who:</p>
@@ -487,21 +486,35 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     }));
 
     // Hero Sniff walks in along the top of the middle card, sits, then wags
-    const walker = document.querySelector('.walker'), hero = document.querySelector('#sniff-hero');
-    const dist = document.querySelector('.fan .c2').offsetWidth * .45;
+    // Step, don't glide: he only moves forward while a paw is lifted (with a small
+    // bob), then plants it and pauses, so his feet never skate along the card.
+    const walker = document.querySelector('.fan .walker'), hero = document.querySelector('#sniff-hero');
+    const steps = 6, dist = document.querySelector('.fan .c2').offsetWidth * .45, stride = dist / steps;
     const endX = -.135 * hero.offsetWidth;   // lines his nose up with the sitting Sniff's nose
-    const start = 900, walkTime = 1800;
-    walker.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: start, fill: 'forwards' });
-    const walk = walker.animate([{ translate: `${endX - dist}px 0` }, { translate: `${endX}px 0` }],
-      { duration: walkTime, delay: start, easing: 'cubic-bezier(.3, .2, .5, 1)', fill: 'forwards' });
-    let stepper;
-    setTimeout(() => stepper = setInterval(() => walker.classList.toggle('stride'), 190), start);
-    walk.finished.then(() => {
-      clearInterval(stepper);
-      walker.classList.remove('stride');
+    const pause = ms => new Promise(r => setTimeout(r, ms));
+    const moveTo = (from, to, lift, ms) => {
+      const a = walker.animate([
+        { translate: `${from}px 0` }, { translate: `${(from + to) / 2}px ${-lift}px` }, { translate: `${to}px 0` }
+      ], { duration: ms, easing: 'ease-in-out', fill: 'forwards' });
+      return a.finished.then(() => { a.commitStyles(); a.cancel(); });
+    };
+    (async () => {
+      let x = endX - dist;
+      walker.style.translate = `${x}px 0`;
+      await pause(900);
+      walker.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, fill: 'forwards' });
+      for (let i = 0; i < steps; i++) {
+        walker.classList.add('stride');              // paw up, body travels and lifts a touch
+        await moveTo(x, x + stride, 3, 190);
+        walker.classList.remove('stride');           // paw down, weight settles
+        x += stride;
+        await moveTo(x, x, -1, 120);
+      }
+      await pause(120);
       walker.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: 'forwards' });
-      hero.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, fill: 'forwards' }).finished.then(() => play(hero));
-    });
+      await hero.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, fill: 'forwards' }).finished;
+      play(hero);
+    })();
 
     // Every "Join the pack" button, and the email box, sets every Sniff wagging
     document.querySelectorAll('.btn-leaf, .signup-form input, .signup-form .btn').forEach(el => {

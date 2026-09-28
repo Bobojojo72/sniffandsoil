@@ -99,10 +99,15 @@
     .sniff-rig { display: inline-block; position: relative; line-height: 0; }
     .sniff-rig .pose { display: block; position: relative; }
     .sniff-rig img { display: block; width: 100%; height: auto; }
-    .sniff-rig .tail { position: absolute; inset: 0; transform-origin: 19.7% 86.7%; }
+    .sniff-rig .tail { position: absolute; inset: 0; transform-origin: 17.1% 86.3%; }
     @media (prefers-reduced-motion: no-preference) {
-      .sniff-rig.wag .tail { animation: wag .36s ease-in-out 4; }
-      @keyframes wag { 0%, 100% { rotate: 0deg; } 30% { rotate: 34deg; } 70% { rotate: -10deg; } }
+      .sniff-rig.wag .tail { animation: wag .56s ease-in-out 3; }
+      /* Seen from the side a wag swings towards and away from you: the tail
+         foreshortens towards its base and lifts a little, never crossing the body */
+      @keyframes wag {
+        0%, 50%, 100% { rotate: 0deg; scale: 1 1; }
+        25%, 75% { rotate: 12deg; scale: .5 1; }
+      }
     }
 
     /* Nav */
@@ -326,7 +331,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <figure class="card c1" style="margin:0"><img src="assets/cards/card-09.png" alt="Card: It seemed like a good idea." width="800" height="1131" /></figure>
         <figure class="card c2" style="margin:0"><img src="assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" /></figure>
         <figure class="card c3" style="margin:0"><img src="assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" /></figure>
-        <span class="sniff doodle sniff-rig" id="sniff-hero" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
+        <span class="sniff doodle sniff-rig" id="sniff-hero" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
       </div>
     </div>
   </section>
@@ -374,7 +379,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <h2>Who (or what) is Sniff &amp; Soil?</h2>
         <p>Sniff &amp; Soil started with one slightly feral dog, a lot of eco guilt, and a complete lack of cards that felt genuinely funny and pet-obsessed.</p>
         <p>Sniff is the official chaos mascot. The cards are for absolutely everyone.</p>
-        <span class="doodle sniff-rig" role="img" aria-label="Sniff, drawn in one line"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
+        <span class="doodle sniff-rig" role="img" aria-label="Sniff, drawn in one line"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
       </div>
       <div>
         <p class="people-intro">We're building a tiny-but-mighty brand for people who:</p>
@@ -424,7 +429,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <section class="join" id="join">
     <div class="wrap">
       <div class="join-panel">
-        <span class="doodle sniff-rig" id="sniff-join" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
+        <span class="doodle sniff-rig" id="sniff-join" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
         <div>
           <h2>Join the pack.</h2>
           <p>Be first to know when the card range drops, and get early bird offers.</p>
@@ -454,7 +459,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <source srcset="assets/logo-cream-nodog.png" media="(prefers-color-scheme: dark)" />
         <img src="assets/logo-ink-nodog.png" alt="Sniff and Soil, Pawsitively Sustainable" width="1000" height="250" loading="lazy" />
       </picture>
-      <span class="doodle sniff-rig" id="sniff-footer" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.png" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.png" alt="" width="152" height="135" /></span></span>
+      <span class="doodle sniff-rig" id="sniff-footer" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
     </a>
     <p>&copy; <span id="year">2026</span> Sniff &amp; Soil. Built with muddy paws and a clean conscience.</p>
   </div>

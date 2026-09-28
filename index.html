@@ -8,6 +8,7 @@
   <meta name="theme-color" content="#eeefe9" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#1b1c17" media="(prefers-color-scheme: dark)" />
   <link rel="icon" type="image/png" href="assets/sniff-line.png" />
+  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('walk');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
@@ -132,7 +133,7 @@
     .hero .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
     .soon { display: inline-block; margin-top: 1.25rem; font-size: .95rem; color: var(--mute); }
 
-    .fan { --cw: clamp(180px, 17vw, 240px); position: relative; height: clamp(360px, 32vw, 470px); }
+    .fan { --cw: clamp(180px, 17vw, 240px); --sw: 96px; position: relative; height: clamp(360px, 32vw, 470px); }
     .fan .card { position: absolute; left: 50%; top: 50%; width: var(--cw); }
     .fan .card img, .line img { border-radius: 3px; box-shadow: var(--shadow); aspect-ratio: 800 / 1131; width: 100%; height: auto; background: #f5f4f0; }
     .fan .card { transition: transform .45s var(--ease); }
@@ -145,15 +146,21 @@
     .fan .c1:hover { transform: translate(-132%, -56%) rotate(-3deg); }
     .fan .c2:hover { transform: translate(-50%, -66%) rotate(0deg); }
     .fan .c3:hover { transform: translate(32%, -48%) rotate(1deg); }
-    .fan .sniff { position: absolute; width: 96px; height: auto; left: calc(50% - 10px); bottom: calc(50% + var(--cw) * .86 - 4px); z-index: 4; }
+    .fan .sniff, .fan .walker { position: absolute; left: calc(50% - 10px); bottom: calc(50% + var(--cw) * .86 - 4px); z-index: 4; }
+    .fan .sniff { width: var(--sw); }
+    /* Standing Sniff (two AI-drawn poses, tools/vectorise_pose.py) walks in, then swaps to sitting */
+    .fan .walker { width: calc(var(--sw) * 1.02); opacity: 0; pointer-events: none; line-height: 0; }
+    .fan .walker img { display: block; width: 100%; height: auto; }
+    .fan .walker .w2 { position: absolute; inset: 0; visibility: hidden; }
+    .fan .walker.stride .w1 { visibility: hidden; }
+    .fan .walker.stride .w2 { visibility: visible; }
+    .walk .fan .sniff { opacity: 0; }
 
     @media (prefers-reduced-motion: no-preference) {
       .fan .card { animation: deal .9s var(--ease) both; }
       .fan .c2 { animation-delay: .08s; }
       .fan .c3 { animation-delay: .16s; }
-      .fan .sniff { animation: appear .5s ease-out .8s both; }
       @keyframes deal { from { opacity: 0; translate: 0 60px; rotate: 8deg; } }
-      @keyframes appear { from { opacity: 0; } }
     }
 
     /* The washing line of cards */
@@ -277,7 +284,7 @@
       .hero p { font-size: 1.1rem; }
       .fan { height: 300px; }
       .fan { --cw: 118px; }
-      .fan .sniff { width: 70px; }
+      .fan { --sw: 70px; }
       .roadmap, .promises { grid-template-columns: 1fr; }
       .promises li:nth-child(odd) { border-right: 0; }
       .promises li:not(:last-child) { border-bottom: 1px solid var(--hairline); }
@@ -332,6 +339,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <figure class="card c2" style="margin:0"><img src="assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" /></figure>
         <figure class="card c3" style="margin:0"><img src="assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" /></figure>
         <span class="sniff doodle sniff-rig" id="sniff-hero" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
+        <span class="walker doodle" aria-hidden="true"><img class="w1" src="assets/sniff-walk-1.svg" alt="" width="792" height="703" /><img class="w2" src="assets/sniff-walk-2.svg" alt="" width="792" height="703" /></span>
       </div>
     </div>
   </section>
@@ -380,6 +388,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <p>Sniff &amp; Soil started with one slightly feral dog, a lot of eco guilt, and a complete lack of cards that felt genuinely funny and pet-obsessed.</p>
         <p>Sniff is the official chaos mascot. The cards are for absolutely everyone.</p>
         <span class="doodle sniff-rig" role="img" aria-label="Sniff, drawn in one line"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
+        <span class="walker doodle" aria-hidden="true"><img class="w1" src="assets/sniff-walk-1.svg" alt="" width="792" height="703" /><img class="w2" src="assets/sniff-walk-2.svg" alt="" width="792" height="703" /></span>
       </div>
       <div>
         <p class="people-intro">We're building a tiny-but-mighty brand for people who:</p>
@@ -474,9 +483,25 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     const rigs = [...document.querySelectorAll('.sniff-rig')];
     const play = rig => rig.classList.add('wag');
     rigs.forEach(rig => rig.addEventListener('animationend', e => {
-      if (e.animationName === 'appear') play(rig);
       if (e.animationName === 'wag') rig.classList.remove('wag');
     }));
+
+    // Hero Sniff walks in along the top of the middle card, sits, then wags
+    const walker = document.querySelector('.walker'), hero = document.querySelector('#sniff-hero');
+    const dist = document.querySelector('.fan .c2').offsetWidth * .45;
+    const endX = -.135 * hero.offsetWidth;   // lines his nose up with the sitting Sniff's nose
+    const start = 900, walkTime = 1800;
+    walker.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: start, fill: 'forwards' });
+    const walk = walker.animate([{ translate: `${endX - dist}px 0` }, { translate: `${endX}px 0` }],
+      { duration: walkTime, delay: start, easing: 'cubic-bezier(.3, .2, .5, 1)', fill: 'forwards' });
+    let stepper;
+    setTimeout(() => stepper = setInterval(() => walker.classList.toggle('stride'), 190), start);
+    walk.finished.then(() => {
+      clearInterval(stepper);
+      walker.classList.remove('stride');
+      walker.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: 'forwards' });
+      hero.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, fill: 'forwards' }).finished.then(() => play(hero));
+    });
 
     // Every "Join the pack" button, and the email box, sets every Sniff wagging
     document.querySelectorAll('.btn-leaf, .signup-form input, .signup-form .btn').forEach(el => {

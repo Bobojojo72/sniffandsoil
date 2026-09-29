@@ -1,118 +1,57 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
+  <meta name="robots" content="noindex" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sniff & Soil | Eco-Friendly Treats, Cards & Gifts</title>
   <meta name="description" content="Sniff & Soil creates eco-friendly dog treats, witty greeting cards, and gift-ready goodies for animal lovers who care about the planet." />
-  <meta name="theme-color" content="#ede9df" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#1a1b16" media="(prefers-color-scheme: dark)" />
-  <link rel="icon" type="image/png" href="assets/sniff-line.png" />
+  <meta name="theme-color" content="#eeefe9" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1b1c17" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" type="image/png" href="../assets/sniff-line.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <style>
     :root {
-      /* Forest floor: bone paper, forest canopy, bark soil, pale oak. Leaf green is the one accent. */
-      --bone: #ede9df;
-      --forest: #1f2a1f;
-      --bark: #3b2c21;
-      --soft-black: #1c1d18;
-      --oak: #7a5234;
-      --canvas: var(--bone);
-      --surface: #f5f2ea;
-      --ink: var(--soft-black);
-      --body: #48463d;
-      --mute: #6b6759;
-      --hairline: #d3ccbc;
+      --canvas: #eeefe9;
+      --surface: #fbfbf8;
+      --ink: #23251d;
+      --body: #4d4f46;
+      --mute: #6c6e63;
+      --hairline: #cfd1c6;
       --leaf: #7ecd43;
-      --leaf-deep: #4f8f24;
+      --leaf-deep: #5fa92c;
       --on-leaf: #1d2a12;
-      --shadow: 0 1px 1px rgb(40 30 20 / .12), 0 3px 6px -2px rgb(40 30 20 / .14), 0 18px 32px -12px rgb(40 30 20 / .30);
-      --shadow-lift: 0 2px 3px rgb(40 30 20 / .12), 0 8px 14px -4px rgb(40 30 20 / .16), 0 32px 52px -16px rgb(40 30 20 / .42);
-      --radius: 4px;
+      --shadow: 0 1px 2px rgb(35 37 29 / .10), 0 10px 24px -8px rgb(35 37 29 / .22);
+      --shadow-lift: 0 2px 4px rgb(35 37 29 / .10), 0 22px 40px -10px rgb(35 37 29 / .32);
+      --radius: 6px;
       --display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
       --text: "Figtree", system-ui, sans-serif;
       --ease: cubic-bezier(.16, 1, .3, 1);
-
-      /* Materials, drawn in code until the AI Studio photographs replace them.
-         ponytail: procedural SVG textures; swap for the soil/oak photos when they exist. */
-      --tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .24 0 0 0 0 .18 0 0 0 0 .12 0 0 0 -1.1 .62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-      --tex-oak: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2560' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.00234375 .06' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .24 0 0 0 0 .13 1 0 0 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .05 .5 .05 0 .05 .45 .05 0 .05 .5 .05 0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0046875 .7' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .30 0 0 0 0 .20 0 0 0 0 .10 -1.6 0 0 0 .9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.55'/%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='.35'/%3E%3C/svg%3E");
-      --tex-dapple: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cfilter id='l'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.00625' numOctaves='3' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .62 0 0 0 0 .70 0 0 0 0 .52 1 0 0 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0 0 0 .05 .16'/%3E%3C/feComponentTransfer%3E%3CfeGaussianBlur stdDeviation='6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23l)'/%3E%3C/svg%3E");
       color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --canvas: #1a1b16;
-        --surface: #22231d;
-        --ink: var(--bone);
-        --body: #c9c4b6;
-        --mute: #a39e8f;
-        --hairline: #38372e;
-        --shadow: 0 1px 1px rgb(0 0 0 / .4), 0 18px 32px -12px rgb(0 0 0 / .7);
-        --shadow-lift: 0 2px 3px rgb(0 0 0 / .4), 0 32px 52px -16px rgb(0 0 0 / .8);
+        --canvas: #1b1c17;
+        --surface: #24261f;
+        --ink: #eeefe9;
+        --body: #c9cbbf;
+        --mute: #a3a598;
+        --hairline: #3d4035;
+        --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 28px -8px rgb(0 0 0 / .6);
+        --shadow-lift: 0 2px 4px rgb(0 0 0 / .4), 0 24px 44px -10px rgb(0 0 0 / .7);
         color-scheme: dark;
       }
       .doodle { filter: invert(.94) sepia(.08); }
-    }
-
-    /* Deep grounds (canopy and soil) carry bone type in either theme */
-    .deep {
-      --ink: var(--bone);
-      --body: #cdc8b8;
-      --mute: #a9a491;
-      --hairline: rgb(237 233 223 / .16);
-      --leaf-deep: #9ad466;
-      --shadow: 0 1px 1px rgb(0 0 0 / .35), 0 4px 8px -2px rgb(0 0 0 / .3), 0 24px 40px -14px rgb(0 0 0 / .6);
-      --shadow-lift: 0 2px 3px rgb(0 0 0 / .35), 0 36px 56px -16px rgb(0 0 0 / .75);
-      color: var(--body);
-      color-scheme: dark;
-    }
-    .deep .doodle { filter: invert(.94) sepia(.08); }
-    .ground-forest {
-      background:
-        var(--tex-dapple),
-        var(--tex-grain),
-        radial-gradient(120% 90% at 15% 0%, #2a3829 0%, transparent 60%),
-        var(--forest);
-    }
-    /* A lone oak on a hill at dawn; enlarged and left-anchored so the tree stands clear of the words.
-       The photo sits over the drawn soil, which only shows if the photo is missing. */
-    .ground-soil {
-      background:
-        linear-gradient(90deg, rgb(14 17 11 / .9) 0%, rgb(14 17 11 / .72) 36%, rgb(14 17 11 / .12) 68%, transparent 85%),
-        url(assets/photos/lone-oak.webp) 0% 62% / max(130%, 1100px) auto no-repeat,
-        url(assets/tex/soil.webp) 0 0 / 512px,
-        var(--bark);
-    }
-    /* The washing line hangs in a misty wood; the canopy tint keeps the type legible */
-    #cards.ground-forest {
-      background:
-        linear-gradient(180deg, rgb(22 30 21 / .9) 0%, rgb(22 30 21 / .62) 38%, rgb(22 30 21 / .7) 62%, rgb(22 30 21 / .95) 100%),
-        url(assets/photos/forest-mist.webp) center 30% / cover no-repeat,
-        var(--forest);
-    }
-    /* Characterful oiled oak planks under the hero cards; the drawn grain is the fallback */
-    .hero::before, .fan::before { --oak-photo: url(assets/photos/oak-planks.webp) center / cover no-repeat; }
-    /* Join: fallen oak leaves on the forest floor, calmed slightly so the card stock leads */
-    .ground-leaves {
-      background:
-        linear-gradient(rgb(40 22 10 / .28), rgb(40 22 10 / .28)),
-        url(assets/photos/oak-leaves.webp) center / cover no-repeat,
-        var(--bark);
-    }
-    @media (prefers-color-scheme: dark) {
-      /* After dark the wood and leaves dim a touch: an inset wash over the photo, under the content */
-      .ground-leaves, .hero::before, .fan::before { box-shadow: inset 0 0 0 100vmax rgb(20 14 10 / .3) !important; }
     }
 
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; scrollbar-color: var(--hairline) var(--canvas); }
     body {
       margin: 0;
-      background: var(--tex-grain), var(--canvas);
+      background: var(--canvas);
       color: var(--body);
       font: 400 1.0625rem/1.6 var(--text);
       -webkit-font-smoothing: antialiased;
@@ -135,7 +74,7 @@
     p { margin: 0; max-width: 62ch; text-wrap: pretty; }
 
     .wrap { width: min(1180px, 100% - 2.5rem); margin-inline: auto; }
-    section { padding-block: clamp(5rem, 3.5rem + 6vw, 9rem); }
+    section { padding-block: clamp(4rem, 3rem + 5vw, 7.5rem); }
 
     /* Buttons: full pill everywhere, panels 6px */
     .btn {
@@ -145,15 +84,15 @@
       font: 600 1rem/1 var(--text);
       text-decoration: none;
       white-space: nowrap;
-      border: 1px solid var(--ink);
-      transition: transform .2s var(--ease), background-color .2s, box-shadow .3s var(--ease);
+      border: 1.5px solid var(--ink);
+      transition: transform .2s var(--ease), background-color .2s, box-shadow .2s;
       cursor: pointer;
     }
     .btn:active { transform: translateY(1px) scale(.98); }
-    .btn-leaf { background: var(--leaf); color: var(--on-leaf); border-color: transparent; box-shadow: 0 1px 1px rgb(29 42 18 / .25), 0 8px 18px -8px rgb(29 42 18 / .5); }
-    .btn-leaf:hover { background: #8fd95a; box-shadow: 0 1px 1px rgb(29 42 18 / .25), 0 12px 24px -8px rgb(29 42 18 / .55); }
-    .btn-ghost { background: transparent; color: var(--ink); border-color: color-mix(in srgb, var(--ink) 40%, transparent); }
-    .btn-ghost:hover { border-color: var(--ink); }
+    .btn-leaf { background: var(--leaf); color: var(--on-leaf); border-color: var(--on-leaf); box-shadow: 0 2px 0 var(--on-leaf); }
+    .btn-leaf:hover { background: #8fd95a; }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn-ghost:hover { background: var(--surface); }
     .btn i { font-size: 1.15em; }
 
     /* Sniff rig: body + tail cut from the logo's one-line dog (tools/make_assets.py).
@@ -187,13 +126,7 @@
     .nav .btn { padding: .55rem 1.1rem; font-size: .95rem; }
 
     /* Hero */
-    .hero { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(3rem, 1rem + 6vw, 7rem) clamp(4rem, 2rem + 5vw, 7.5rem); }
-    /* The cards lie on a pale oak table that runs off the right edge */
-    .hero::before {
-      content: ""; position: absolute; z-index: -1; inset: 0 0 0 calc(50% - 30px);
-      background: linear-gradient(90deg, rgb(40 30 20 / .14), transparent 30%), var(--oak-photo), var(--tex-oak), var(--tex-grain), var(--oak);
-      box-shadow: inset 1px 0 0 rgb(255 255 255 / .3), -1px 0 0 rgb(40 30 20 / .18), -24px 0 40px -28px rgb(40 30 20 / .45);
-    }
+    .hero { padding-block: clamp(2.5rem, 1rem + 5vw, 5.5rem) clamp(3rem, 2rem + 4vw, 6rem); }
     .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
     .hero h1 { font-size: clamp(2.6rem, 1.6rem + 3.4vw, 4.25rem); font-weight: 800; letter-spacing: -.022em; }
     .hero p { margin-top: 1.4rem; font-size: 1.2rem; color: var(--body); max-width: 40ch; }
@@ -213,9 +146,6 @@
     .fan .c1:hover { transform: translate(-132%, -56%) rotate(-3deg); }
     .fan .c2:hover { transform: translate(-50%, -66%) rotate(0deg); }
     .fan .c3:hover { transform: translate(32%, -48%) rotate(1deg); }
-    /* On the dark oak the cards need a heavier contact shadow and Sniff turns cream */
-    .fan { --shadow: 0 1px 1px rgb(20 10 4 / .35), 0 6px 10px -2px rgb(20 10 4 / .35), 0 28px 44px -14px rgb(20 10 4 / .7); --shadow-lift: 0 2px 3px rgb(20 10 4 / .35), 0 40px 60px -16px rgb(20 10 4 / .8); }
-    .fan .sniff, .join-panel .doodle { filter: invert(.94) sepia(.08); }
     .fan .sniff { position: absolute; width: var(--sw); left: calc(50% - 10px); bottom: calc(50% + var(--cw) * .86 - 4px); z-index: 4; }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -245,7 +175,8 @@
     }
 
     /* The washing line of cards */
-    .cards-head p { font-size: 1.1rem; margin-top: 1.1rem; }
+    #cards { padding-top: clamp(1rem, 2vw, 2.5rem); }
+    .cards-head p { font-size: 1.1rem; }
     .line-scroll { margin-top: 3rem; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 1.5rem; scrollbar-width: thin; }
     .line {
       position: relative; display: flex; gap: clamp(1.25rem, 2.5vw, 2.25rem);
@@ -286,6 +217,7 @@
     .range strong { font: 700 clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem)/1.1 var(--display); color: var(--ink); letter-spacing: -.02em; }
 
     /* About */
+    .about { background: var(--surface); border-block: 1px solid var(--hairline); }
     .about .wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(2rem, 6vw, 6rem); align-items: start; }
     .about p + p { margin-top: 1.1rem; }
     .about h2 { margin-bottom: 1.5rem; }
@@ -296,61 +228,55 @@
     .about .doodle { width: 150px; margin-top: 2.5rem; rotate: 4deg; }
 
     /* Treats: now and next */
-    .treats { padding-top: 0; }
-    .treats .wrap { border-top: 1px solid var(--hairline); padding-top: clamp(4rem, 3rem + 4vw, 7rem); }
-    .roadmap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 4rem); margin-top: 3rem; }
-    .step { border-top: 1px solid var(--hairline); padding-top: 1.5rem; }
-    .step.now { border-top-color: var(--ink); }
+    .roadmap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
+    .step { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 1.6rem 1.6rem 1.8rem; background: var(--canvas); }
+    .step.now { background: var(--surface); box-shadow: var(--shadow); border-color: transparent; }
     .step b { display: block; font: 700 1.4rem/1.15 var(--display); color: var(--ink); margin-bottom: .5rem; letter-spacing: -.01em; }
     .step small { display: inline-flex; align-items: center; gap: .35rem; font-size: .9rem; font-weight: 600; color: var(--mute); margin-bottom: .9rem; }
     .step.now small { color: var(--leaf-deep); }
     .treats .aside { margin-top: 2rem; font-size: 1.1rem; }
 
     /* Eco */
-    /* Words stay on the left in the shade; the seedling on the right is left clear */
-    .eco { min-height: min(92vh, 860px); display: flex; align-items: center; }
-    .eco .wrap { display: grid; grid-template-columns: minmax(0, 36rem); gap: 2.5rem; }
+    .eco .wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
     .eco h2 { margin-bottom: 1.25rem; }
-    .promises { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--hairline); border-radius: var(--radius); background: rgb(20 14 10 / .4); }
+    .promises { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--surface); }
     .promises li { padding: 1.4rem; display: grid; gap: .6rem; color: var(--ink); font-weight: 600; line-height: 1.35; }
     .promises li:nth-child(odd) { border-right: 1px solid var(--hairline); }
     .promises li:nth-child(-n+2) { border-bottom: 1px solid var(--hairline); }
     .promises i { font-size: 1.6rem; color: var(--leaf-deep); }
 
     /* Join: the one committed colour field */
-    /* Join: a sheet of card stock laid on the oak table */
+    .join { padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 6vw, 6rem); }
     .join-panel {
       position: relative;
-      background: var(--tex-grain), var(--surface); color: var(--body);
-      border-radius: 2px;
+      background: var(--leaf); color: var(--on-leaf);
+      border-radius: var(--radius);
       padding: clamp(2rem, 5vw, 4.5rem);
       display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: end;
-      box-shadow: var(--shadow-lift);
-      rotate: -.4deg;
+      border: 1.5px solid var(--on-leaf);
     }
-    .join-panel p { margin-top: 1rem; font-size: 1.1rem; }
-    .perks { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .5rem; font-weight: 600; color: var(--ink); }
+    .join-panel h2 { color: var(--on-leaf); }
+    .join-panel p { color: var(--on-leaf); margin-top: 1rem; font-size: 1.1rem; }
+    .perks { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .5rem; font-weight: 600; }
     .perks li { display: flex; gap: .6rem; align-items: center; }
-    .perks i { color: var(--leaf-deep); }
     .signup-form { display: grid; gap: .5rem; }
-    .signup-form label { font-weight: 600; font-size: .95rem; color: var(--ink); }
+    .signup-form label { font-weight: 600; font-size: .95rem; }
     .signup-form .row { display: flex; gap: .5rem; flex-wrap: wrap; }
     .signup-form input {
       flex: 1 1 14rem; min-width: 0;
-      font: 400 1.05rem/1 var(--text); color: var(--ink);
+      font: 400 1.05rem/1 var(--text); color: #23251d;
       padding: .85rem 1.1rem; border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent); background: var(--canvas);
-      caret-color: var(--leaf-deep);
+      border: 1.5px solid var(--on-leaf); background: #fbfbf8;
     }
-    .signup-form input::placeholder { color: var(--mute); }
-    .signup-form input:focus-visible { outline: 2px solid var(--leaf-deep); outline-offset: 2px; }
-    .signup-form .btn { background: var(--leaf); color: var(--on-leaf); border-color: transparent; }
-    .signup-form .btn:hover { background: #8fd95a; }
+    .signup-form input::placeholder { color: #5f6157; }
+    .signup-form input:focus-visible { outline: 3px solid var(--on-leaf); outline-offset: 2px; }
+    .signup-form .btn { background: var(--on-leaf); color: #f2f7ec; border-color: var(--on-leaf); }
+    .signup-form .btn:hover { background: #2c3d1e; }
     .signup-form .hint { font-size: .85rem; margin-top: .25rem; }
     .join-panel .doodle { position: absolute; right: clamp(1.5rem, 5vw, 4rem); bottom: calc(100% - 3px); width: 110px; }
 
     /* Footer */
-    footer { padding-block: 3.5rem 4rem; font-size: .95rem; color: var(--mute); }
+    footer { border-top: 1px solid var(--hairline); padding-block: 2.5rem 3rem; font-size: .95rem; color: var(--mute); }
     footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
     .logo-rig picture img { height: 84px; width: auto; }
     .logo-rig .sniff-rig { position: absolute; left: 85.62%; top: 11.02%; width: 9.98%; }
@@ -358,20 +284,7 @@
     /* Tablet and phone */
     @media (max-width: 900px) {
       .hero .wrap, .about .wrap, .eco .wrap, .join-panel { grid-template-columns: 1fr; }
-      /* Stacked: the oak table sits under the fan only, edge to edge */
-      .hero { padding-bottom: 0; }
-      .hero::before { display: none; }
-      /* Stacked: words in the shade at the top, the oak clear at the bottom */
-      .eco { display: block; min-height: 0; padding-bottom: 125vw; }
-      .ground-soil {
-        background:
-          linear-gradient(180deg, rgb(14 17 11 / .96) 0%, rgb(14 17 11 / .96) 49%, rgb(14 17 11 / .45) 58%, transparent 70%),
-          url(assets/photos/lone-oak.webp) 50% 100% / auto 52% no-repeat,
-          #12150e;
-      }
-      .fan { isolation: isolate; margin-inline: -1.25rem; }
-      .fan::before { content: ""; position: absolute; z-index: -1; inset: 0; background: var(--oak-photo), var(--tex-oak), var(--tex-grain), var(--oak); box-shadow: 0 -1px 0 rgb(40 30 20 / .15); }
-      .fan { height: 420px; }
+      .fan { height: 340px; }
       .fan { --cw: 170px; }
       .range { grid-template-columns: 1fr; gap: .4rem; }
     }
@@ -379,7 +292,7 @@
       .nav ul li:not(:last-child) { display: none; }
       .nav-logo picture img { height: 36px; }
       .hero p { font-size: 1.1rem; }
-      .fan { height: 380px; }
+      .fan { height: 300px; }
       .fan { --cw: 118px; }
       .fan { --sw: 70px; }
       .roadmap, .promises { grid-template-columns: 1fr; }
@@ -392,11 +305,11 @@
 </head>
 <body>
 <!--
-THESIS: The cards are the product and the joke, handled on real materials from the forest floor: laid on knotty oak, pegged in a misty wood, posted on fallen oak leaves, with the one-line dog from the logo in the margins. Refuses flat pastel grounds and cartoon eco.
-OWN-WORLD: Forest floor. Bone paper #EDE9DF with fine grain, soft black #1C1D18 ink, forest #1F2A1F canopy, bark #3B2C21 soil; photographed oak, mist, seedling and leaf litter as grounds; card stock with deep contact shadows; hairlines, not boxes; leaf green #7ECD43 only on the primary action; Bricolage Grotesque display, Figtree text.
+THESIS: The cards are the product and the joke, so the page is Sniff's sketchbook: real deadpan card fronts fanned, pegged and handled, with the one-line dog from the logo in the margins. Refuses the centred hero over three matching feature boxes.
+OWN-WORLD: pale olive-grey sketchbook canvas, olive-charcoal ink, off-white card stock with soft lift, thin olive hairlines, one leaf-green pill taken from the logo's leaf; Bricolage Grotesque display, Figtree text; pills for actions, 6px panels.
 STORY: see the actual cards, laugh, learn it is planet-kind and pre-launch, join the list.
 FIRST VIEWPORT: left, headline + one sentence + green "Join the pack"; right, three real cards fanned with Sniff sitting on the top card.
-FORM: Forest floor, user-pinned (28 Sep 2026) over the earlier PostHog sketchbook (seed ce8f7705); layout, type and motion kept, materials replaced.
+FORM: PostHog-inspired sketchbook (user-pinned via Awesome Design MD), fused with the confirmed handwriting logo. Seed ce8f7705.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 -->
 
@@ -404,10 +317,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <nav class="wrap" aria-label="Main">
     <a class="nav-logo" href="#top" aria-label="Sniff and Soil home">
       <picture>
-        <source srcset="assets/logo-cream.png" media="(prefers-color-scheme: dark)" />
-        <img src="assets/logo-ink.png" alt="Sniff and Soil, Pawsitively Sustainable" width="1000" height="250" />
+        <source srcset="../assets/logo-cream.png" media="(prefers-color-scheme: dark)" />
+        <img src="../assets/logo-ink.png" alt="Sniff and Soil, Pawsitively Sustainable" width="1000" height="250" />
       </picture>
-      <img class="leaf" src="assets/leaf.svg" alt="" width="58" height="78" />
+      <img class="leaf" src="../assets/leaf.svg" alt="" width="58" height="78" />
     </a>
     <ul>
       <li><a href="#cards">Cards</a></li>
@@ -433,15 +346,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       </div>
 
       <div class="fan" aria-label="Three cards from the first range">
-        <figure class="card c1" style="margin:0"><img src="assets/cards/card-09.png" alt="Card: It seemed like a good idea." width="800" height="1131" /></figure>
-        <figure class="card c2" style="margin:0"><img src="assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" /></figure>
-        <figure class="card c3" style="margin:0"><img src="assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" /></figure>
-        <span class="sniff doodle sniff-rig" id="sniff-hero" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
+        <figure class="card c1" style="margin:0"><img src="../assets/cards/card-09.png" alt="Card: It seemed like a good idea." width="800" height="1131" /></figure>
+        <figure class="card c2" style="margin:0"><img src="../assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" /></figure>
+        <figure class="card c3" style="margin:0"><img src="../assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" /></figure>
+        <span class="sniff doodle sniff-rig" id="sniff-hero" aria-hidden="true"><span class="pose"><img src="../assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="../assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
       </div>
     </div>
   </section>
 
-  <section id="cards" class="deep ground-forest">
+  <section id="cards">
     <div class="wrap cards-head">
       <h2>Deadpan on the front. Feral in spirit.</h2>
       <p>Nine designs from the first range. Artwork is still being finalised, so these may change before launch.</p>
@@ -449,15 +362,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
     <div class="line-scroll" tabindex="0" aria-label="The first card range, scroll sideways">
       <ul class="line">
-        <li><img src="assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-03.png" alt="Card: Same again tomorrow." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-04.png" alt="Card: No regrets." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-05.png" alt="Card: Another year. Still obsessed." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-06.png" alt="Card: I remembered." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-07.png" alt="Card: I'd choose you again." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-09.png" alt="Card: It seemed like a good idea." width="800" height="1131" loading="lazy" /></li>
-        <li><img src="assets/cards/card-10.png" alt="Card: We're a package deal." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-01.png" alt="Card: You're my person." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-03.png" alt="Card: Same again tomorrow." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-04.png" alt="Card: No regrets." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-05.png" alt="Card: Another year. Still obsessed." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-06.png" alt="Card: I remembered." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-07.png" alt="Card: I'd choose you again." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-08.png" alt="Card: I'll wait." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-09.png" alt="Card: It seemed like a good idea." width="800" height="1131" loading="lazy" /></li>
+        <li><img src="../assets/cards/card-10.png" alt="Card: We're a package deal." width="800" height="1131" loading="lazy" /></li>
       </ul>
     </div>
 
@@ -484,7 +397,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <h2>Who (or what) is Sniff &amp; Soil?</h2>
         <p>Sniff &amp; Soil started with one slightly feral dog, a lot of eco guilt, and a complete lack of cards that felt genuinely funny and pet-obsessed.</p>
         <p>Sniff is the official chaos mascot. The cards are for absolutely everyone.</p>
-        <span class="doodle sniff-rig" role="img" aria-label="Sniff, drawn in one line"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
+        <span class="doodle sniff-rig" role="img" aria-label="Sniff, drawn in one line"><span class="pose"><img src="../assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="../assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
       </div>
       <div>
         <p class="people-intro">We're building a tiny-but-mighty brand for people who:</p>
@@ -516,7 +429,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
   </section>
 
-  <section class="eco deep ground-soil" id="eco">
+  <section class="eco" id="eco">
     <div class="wrap">
       <div>
         <h2>Planet-kind by design, not as an afterthought.</h2>
@@ -531,10 +444,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
   </section>
 
-  <section class="join ground-leaves" id="join">
+  <section class="join" id="join">
     <div class="wrap">
       <div class="join-panel">
-        <span class="doodle sniff-rig" id="sniff-join" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
+        <span class="doodle sniff-rig" id="sniff-join" aria-hidden="true"><span class="pose"><img src="../assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="../assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
         <div>
           <h2>Join the pack.</h2>
           <p>Be first to know when the card range drops, and get early bird offers.</p>
@@ -557,12 +470,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </section>
 </main>
 
-<footer class="deep ground-forest">
+<footer>
   <div class="wrap">
     <a class="logo-rig" href="#top" aria-label="Back to top">
-      <picture><img src="assets/logo-cream-nodog.png" alt="Sniff and Soil, Pawsitively Sustainable" width="1000" height="250" /></picture>
-      <img class="leaf" src="assets/leaf.svg" alt="" width="58" height="78" />
-      <span class="doodle sniff-rig" id="sniff-footer" aria-hidden="true"><span class="pose"><img src="assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
+      <picture>
+        <source srcset="../assets/logo-cream-nodog.png" media="(prefers-color-scheme: dark)" />
+        <img src="../assets/logo-ink-nodog.png" alt="Sniff and Soil, Pawsitively Sustainable" width="1000" height="250" loading="lazy" />
+      </picture>
+      <img class="leaf" src="../assets/leaf.svg" alt="" width="58" height="78" />
+      <span class="doodle sniff-rig" id="sniff-footer" aria-hidden="true"><span class="pose"><img src="../assets/sniff-body.svg" alt="" width="152" height="135" /><img class="tail" src="../assets/sniff-tail.svg" alt="" width="152" height="135" /></span></span>
     </a>
     <p>&copy; <span id="year">2026</span> Sniff &amp; Soil. Built with muddy paws and a clean conscience.</p>
   </div>

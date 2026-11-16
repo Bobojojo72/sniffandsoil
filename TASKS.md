@@ -4,6 +4,7 @@ the current goal, the next step and any open decisions.
 
 ## Now
 - Added /train-agents slash command at .claude/commands/train-agents.md (uncommitted). Lesson 1 (Router Pattern) started; waiting on Jo's experience level and framework choice.
+- Planning a reMarkable notebook/grid generator modelled on gridcraft-studio (site is blocked from this container; plan drafted from the brief). Waiting on Jo: screenshots or unblocking the host, and where it should live.
 ## Next
 - Open decision: commit .claude/ to this repo, or move the command to user-level (~/.claude/commands) so it isn't tied to the Sniff & Soil site.
 ## Done
